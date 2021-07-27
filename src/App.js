@@ -22,9 +22,9 @@ export default function App() {
           <Route path="/detail">
             <Details />
           </Route>
-          <Route path="/listing">
-            <Listing />
-          </Route>
+          <Route path="/listing/:name/:id/:publicToken" render={(props) => (
+            <Listing key={props.match.params.pageid} {...props} />)
+          } />
           <Route path="/landing">
             <Landing />
           </Route>
