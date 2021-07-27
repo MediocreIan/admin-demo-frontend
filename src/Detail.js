@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Form from "./components/Form"
 import data from "./components/Form/data"
+import { useParams } from 'react-router-dom';
 
-export default function Landing() {
+
+export default function Landing(pro) {
     const [product, setProduct] = useState({});
     const [attributes, setAttributes] = useState([]);
 
+    let { userId, productId } = useParams();
+
+
     useEffect(() => {
-        console.log('detail')
         var requestOptions = {
             method: 'GET',
             redirect: 'follow'
         };
         if (Object.keys(product).length === 0) {
-            fetch("https://admin.demo.threekit.com/product/60fef966d3c677d9265583bc/71e76734-3587-49ca-a6ca-47ce54f9e6c8", requestOptions)
+            fetch(`https://admin.demo.threekit.com/product/${userId}/${productId}`, requestOptions)
                 .then(response => response.json())
                 .then(result => {
                     setProduct(result)

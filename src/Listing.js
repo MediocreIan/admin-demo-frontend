@@ -30,7 +30,7 @@ export default function Listing(props) {
             {
 
                 products.map((product) => {
-                    return <ProductListCard product={product} />
+                    return <ProductListCard product={product} userId={id} />
                 })
             }
         </>

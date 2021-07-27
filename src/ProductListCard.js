@@ -41,6 +41,7 @@ export default function MediaControlCard(props) {
     const classes = useStyles();
     const theme = useTheme();
     let history = useHistory()
+    console.log(props.userId)
 
 
     return (
@@ -54,7 +55,7 @@ export default function MediaControlCard(props) {
                         {props.product.description}
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary" onClick={() => {
-                        history.push(`/details/${props.product.id}`)
+                        history.push(`/details/${props.userId}/${props.product.id}`)
                     }}>
                         details
                     </Typography>
