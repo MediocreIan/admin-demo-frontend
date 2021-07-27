@@ -79,7 +79,7 @@ export default function Landing(props) {
                 {users.map((user, index) => (
                     <ListItem button key={user.name}>
                         <ListItemText primary={user.name} onClick={() => {
-                            history.push(`/listing/${user.name}/${user.publicToken}`)
+                            history.push(`/listing/${user.name}/${user._id}/${user.publicToken}`)
                             toggleDrawer()
                         }} />
                     </ListItem>
