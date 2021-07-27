@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Landing (props) {
+export default function Landing(props) {
   // Style
   const classes = useStyles()
   const matches = useMediaQuery('(min-width:600px)')
@@ -51,7 +51,7 @@ export default function Landing (props) {
   const [text, setText] = useState('')
 
   // Check to make sure we can't go too far in the steps
-  function setStep (dir, attr) {
+  function setStep(dir, attr) {
     setSelectSelect()
     setNum()
 
@@ -70,38 +70,38 @@ export default function Landing (props) {
     }
   }
 
-  function handleSelect (attr, e) {
+  function handleSelect(attr, e) {
     // setSelectSelect(e.target.value)
-    console.log({ [attr]: e.target.value })
+    window.configurator.setConfiguration({ [attr]: e.target.value })
   }
-  function handleColor (event, e) {
+  function handleColor(event, e) {
     setColor(e)
     let color = e.rgb
-    console.log({
+    window.configurator.setConfiguration({
       [event]: { r: color[0] / 255, g: color[1] / 255, b: color[2] / 255 }
     })
   }
-  function handleUpload (e) {
+  function handleUpload(e) {
     setFile(e)
-    console.log(e)
+    window.configurator.setConfiguration(e)
   }
-  function handleString (attr, val) {
+  function handleString(attr, val) {
     // This will be set config obj
-    console.log({ [attr]: val })
+    window.configurator.setConfiguration({ [attr]: val })
   }
-  function handlePartRef (attr, val) {
+  function handlePartRef(attr, val) {
     // This will be set config obj
-    console.log({ [attr]: { assetId: val } })
+    window.configurator.setConfiguration({ [attr]: { assetId: val } })
   }
-  function handleSlide (attr, e, newValue) {
+  function handleSlide(attr, e, newValue) {
     // This will be set config obj
-    console.log({ [attr]: newValue })
+    window.configurator.setConfiguration({ [attr]: newValue })
     setNum(newValue)
   }
 
-  function handleTextInput (attr, value) {
+  function handleTextInput(attr, value) {
     setText(value)
-    console.log({ [attr]: value })
+    window.configurator.setConfiguration({ [attr]: value })
   }
   return (
     <div>
@@ -137,7 +137,7 @@ export default function Landing (props) {
                   </div>
                 )
               } else if (event.values.length == 0) {
-                return <TextField value={text} onChange={(e) => handleTextInput(event.name, e.target.value)} placeholder={'Personalize your item'}/>
+                return <TextField value={text} onChange={(e) => handleTextInput(event.name, e.target.value)} placeholder={'Personalize your item'} />
               } else {
                 return (
                   <div>

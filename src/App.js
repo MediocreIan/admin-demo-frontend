@@ -19,9 +19,9 @@ export default function App() {
       <Router>
         <Header />
         <Switch>
-          <Route path="/detail">
-            <Details />
-          </Route>
+          <Route path="/details/:userId/:productId" render={(props) => (
+            <Details key={props.match.params.pageid} {...props} />)
+          } />
           <Route path="/listing/:name/:id/:publicToken" render={(props) => (
             <Listing key={props.match.params.pageid} {...props} />)
           } />
