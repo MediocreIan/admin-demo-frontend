@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-
+import React, { useState, useContext } from 'react';
+import { useContextData, useUpdateContext } from './contextProvider';
 export default function Landing() {
+    const context = useContextData()
+    const setContext = useUpdateContext()
+    console.log(context)
 
-    return(
+    return (
         <>
-        <h5>Detail</h5>
+            <h5>Detail</h5>
         </>
     )
 }
