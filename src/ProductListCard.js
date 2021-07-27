@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
+import { useHistory } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
 export default function MediaControlCard(props) {
     const classes = useStyles();
     const theme = useTheme();
+    let history = useHistory()
+
 
     return (
         <Card className={classes.root}>
@@ -49,6 +53,12 @@ export default function MediaControlCard(props) {
                     <Typography variant="subtitle1" color="textSecondary">
                         {props.product.description}
                     </Typography>
+                    <Typography variant="subtitle1" color="textSecondary" onClick={() => {
+                        history.push(`/details/${props.product.id}`)
+                    }}>
+                        details
+                    </Typography>
+
                 </CardContent>
             </div>
             <CardMedia

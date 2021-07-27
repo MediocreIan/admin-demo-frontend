@@ -1,39 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductListCard from './ProductListCard';
+import { useParams } from 'react-router-dom';
 
-export default function Listing() {
-    const products = [
-        {
-            name: 'Chair',
-            description: 'A totally rad chair',
-            image: 'https://i.imgur.com/nOmEk5S.jpg'
-        },
-        {
-            name: 'Desk',
-            description: 'A totally rad Desk',
-            image: 'https://i.imgur.com/nOmEk5S.jpg'
-        },
-        {
-            name: 'Barn',
-            description: 'A totally rad Barn',
-            image: 'https://i.imgur.com/nOmEk5S.jpg'
-        },
-        {
-            name: 'House',
-            description: 'A totally rad House',
-            image: 'https://i.imgur.com/nOmEk5S.jpg'
-        },
-        {
-            name: 'Box',
-            description: 'A totally rad Box',
-            image: 'https://i.imgur.com/nOmEk5S.jpg'
-        },
-    ]
+export default function Listing(props) {
+    const [products, setProducts] = useState([]);
+    const [user, setUser] = useState({});
 
+    let { id, name, publicToken } = useParams();
+    useEffect(() => {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        console.log(`https://admin.demo.threekit.com/products/${id}`)
+        fetch(`https://admin.demo.threekit.com/products/${id}`, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                setProducts(result.products)
+            })
+            .catch(error => console.log('error', error));
+
+    }
+        , [props.match.params.id]);
+
+    console.log(products)
     return (
         <>
             <h5>Product list</h5>
             {
+
                 products.map((product) => {
                     return <ProductListCard product={product} />
                 })

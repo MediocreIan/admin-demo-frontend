@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,6 +13,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import Hidden from '@material-ui/core/Hidden';
+import { useHistory } from "react-router-dom";
+
 
 
 
@@ -42,21 +44,44 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Landing(props) {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [users, setUsers] = useState([]);
+
     const classes = useStyles();
     const { window } = props;
     const container = window !== undefined ? () => window().document.body : undefined;
     function toggleDrawer() {
         setDrawerOpen(!drawerOpen)
     }
+    let history = useHistory()
+
+
+    useEffect(() => {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch("https://admin.demo.threekit.com/all", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                setUsers(result)
+            })
+            .catch(error => console.log('error', error));
+
+    }
+        , []);
 
     const drawer = (
         <div>
             <div className={classes.toolbar} />
             {/* <Divider /> */}
             <List>
-                {['Ian', 'Matt', 'Will', 'Nicole'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemText primary={text} />
+                {users.map((user, index) => (
+                    <ListItem button key={user.name}>
+                        <ListItemText primary={user.name} onClick={() => {
+                            history.push(`/listing/${user.name}/${user._id}/${user.publicToken}`)
+                            toggleDrawer()
+                        }} />
                     </ListItem>
                 ))}
             </List>
