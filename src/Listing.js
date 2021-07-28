@@ -16,7 +16,7 @@ export default function Listing(props) {
         fetch(`https://admin.demo.threekit.com/products/${id}`, requestOptions)
             .then(response => response.json())
             .then(result => {
-                setProducts(result.products)
+                setProducts(result.assets)
             })
             .catch(error => console.log('error', error));
 
@@ -28,10 +28,9 @@ export default function Listing(props) {
         <>
             <h5>Product list</h5>
             {
-
-                products.map((product) => {
+                products ? products.map((product) => {
                     return <ProductListCard product={product} userId={id} />
-                })
+                }) : <h4>No products found, you may need to add the "website" tag to your products</h4>
             }
         </>
     )
