@@ -16,7 +16,7 @@ export default function Listing(props) {
         fetch(`https://admin.demo.threekit.com/products/${id}`, requestOptions)
             .then(response => response.json())
             .then(result => {
-                setProducts(result.products)
+                setProducts(result.assets)
             })
             .catch(error => console.log('error', error));
 

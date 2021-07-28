@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import NestedForm from './NestedForm'
 
 // UI Elements
 import { makeStyles } from '@material-ui/core/styles'
@@ -10,6 +11,9 @@ import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
+import TuneIcon from '@material-ui/icons/Tune'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+
 // import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
@@ -33,13 +37,16 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Landing(props) {
+export default function Landing (props) {
   // Style
   const classes = useStyles()
   const matches = useMediaQuery('(min-width:600px)')
 
   // Gets the current step
   const [current, setCurrent] = useState(1)
+  const [currentAttr, setCurrentAttr] = useState()
+  const [currentAttrIndex, setCurrentAttrIndex] = useState(0)
+
   // Saving the length of the array in state, probably not needed.
   const [length, setLength] = useState(props.data.length)
 
@@ -49,9 +56,43 @@ export default function Landing(props) {
   const [file, setFile] = useState()
   const [num, setNum] = useState(0)
   const [text, setText] = useState('')
+  const [isNested, setIsNested] = useState(false)
+  const [nestedAttr, setNestedAttr] = useState([])
+
+  function checkNested (attr) {
+    window.pl = window.player.enableApi('player')
+    window.config = window.pl.configurator
+    // console.log("########", attr)
+    if (!window.config) {
+      return
+    }
+    if (window.config.getNestedConfigurator(attr)) {
+      console.log('nested getDisplayAttributes')
+      console.log(
+        window.config.getNestedConfigurator(attr).getDisplayAttributes()
+      )
+      return window.config.getNestedConfigurator(attr).getDisplayAttributes()
+    } else {
+      return false
+    }
+    // console.log(window.config.getNestedConfigurator(attr))
+  }
+
+  useEffect(() => {
+    setCurrentAttr(props.data[currentAttrIndex].name)
+
+    // enable private API for nested config
+    // props.data.forEach((element, index) => {
+    //   console.log()
+    //   if (checkNested(element)) {
+    //     setNestedAttr(nestedAttr => [...nestedAttr, index])
+    //   }
+    //   console.log(nestedAttr)
+    // })
+  }, [])
 
   // Check to make sure we can't go too far in the steps
-  function setStep(dir, attr) {
+  function setStep (dir, attr) {
     setSelectSelect()
     setNum()
 
@@ -60,65 +101,73 @@ export default function Landing(props) {
         return
       } else {
         setCurrent(current => current + 1)
+        setCurrentAttrIndex(currentAttrIndex => currentAttrIndex + 1)
       }
     } else {
       if (current == 1) {
         return
       } else {
         setCurrent(current => current - 1)
+        setCurrentAttrIndex(currentAttrIndex => currentAttrIndex - 1)
       }
     }
   }
 
-  function handleSelect(attr, e) {
+  function handleSelect (attr, e) {
     // setSelectSelect(e.target.value)
     window.configurator.setConfiguration({ [attr]: e.target.value })
   }
-  function handleColor(event, e) {
+  function handleColor (event, e) {
     setColor(e)
     let color = e.rgb
     window.configurator.setConfiguration({
       [event]: { r: color[0] / 255, g: color[1] / 255, b: color[2] / 255 }
     })
   }
-  function handleUpload(e) {
+  function handleUpload (e) {
     setFile(e)
     window.configurator.setConfiguration(e)
   }
-  function handleString(attr, val) {
+  function handleString (attr, val) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: val })
   }
-  function handlePartRef(attr, val) {
+  function handlePartRef (attr, val) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: { assetId: val } })
   }
-  function handleSlide(attr, e, newValue) {
+  function handleSlide (attr, e, newValue) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: newValue })
     setNum(newValue)
   }
 
-  function handleTextInput(attr, value) {
+  function handleTextInput (attr, value) {
     setText(value)
     window.configurator.setConfiguration({ [attr]: value })
   }
   return (
     <div>
-      <h4>Current Step: {current}</h4>
-      <ArrowBackIcon onClick={() => setStep('back')} />
-      <ArrowForwardIcon onClick={() => setStep('forward')} />
+      {props.data.length === 1 ? <h4>{props.data[currentAttrIndex].name}</h4> : (
+        <div>
+          <ArrowBackIcon onClick={() => setStep('back')} />
+          <h4>{props.data[currentAttrIndex].name}</h4>
+
+          <ArrowForwardIcon onClick={() => setStep('forward')} />
+        </div>
+      )}
+
       <div
         className='form-container'
         style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}
       >
-        {[props.data[current - 1]].map(event => {
+        {[props.data[current - 1]].map((event, i) => {
+          // console.log('attr index ' + currentAttrIndex)
           switch (event.type) {
             case 'String':
               if (event.values.length > 10) {
                 return (
                   <div>
-                    <p>Long String {event.name}</p>
                     <FormControl className={classes.formControl}>
                       <InputLabel id={event.id}>{event.name}</InputLabel>
                       <Select id={event.id} value={selectSelect}>
@@ -137,11 +186,16 @@ export default function Landing(props) {
                   </div>
                 )
               } else if (event.values.length == 0) {
-                return <TextField value={text} onChange={(e) => handleTextInput(event.name, e.target.value)} placeholder={'Personalize your item'} />
+                return (
+                  <TextField
+                    value={text}
+                    onChange={e => handleTextInput(event.name, e.target.value)}
+                    placeholder={'Personalize your item'}
+                  />
+                )
               } else {
                 return (
                   <div>
-                    <p>String {event.name}</p>
                     <ButtonGroup
                       color='primary'
                       orientation={`${matches ? `horizontal` : `vertical`}`}
@@ -192,7 +246,6 @@ export default function Landing(props) {
             case 'Color':
               return (
                 <div>
-                  <p>{event.name}</p>
                   <ColorPicker
                     defaultValue={color}
                     value={color}
@@ -208,43 +261,57 @@ export default function Landing(props) {
               } else if (event.values.length > 10) {
                 return (
                   <div>
-                    <p>Part-Ref Long {event.name}</p>
+                    {/* <p>Part-Ref Long {event.name}</p> */}
                     <FormControl className={classes.formControl}>
                       <InputLabel id={event.id}>{event.name}</InputLabel>
                       <Select id={event.id} value={selectSelect}>
                         {event.values.map(f => {
                           return (
-                            <MenuItem
-                              value={f.assetId}
-                              onClick={() =>
-                                handlePartRef(event.name, f.assetId, event)
-                              }
-                            >
-                              {f.label}
-                            </MenuItem>
+                            <div>
+                              {checkNested(event) ? (
+                                <NestedForm />
+                              ) : (
+                                <p>no nest</p>
+                              )}
+
+                              <MenuItem
+                                value={f.assetId}
+                                onClick={() =>
+                                  handlePartRef(event.name, f.assetId, event)
+                                }
+                              >
+                                {f.label}
+                              </MenuItem>
+                            </div>
                           )
                         })}
                       </Select>
                     </FormControl>
                   </div>
                 )
-              } else {
+              } else if (event.values.length < 10) {
                 return (
                   <div>
-                    <p>Part Ref {event.name}</p>
                     <ButtonGroup
                       color='primary'
                       orientation={`${matches ? `horizontal` : `vertical`}`}
                     >
                       {event.values.map(f => {
                         return (
-                          <Button
-                            onClick={() =>
-                              handlePartRef(event.name, f.assetId, event)
-                            }
-                          >
-                            {f.label}
-                          </Button>
+                          <div>
+                            {checkNested(event) ? (
+                              <NestedForm data={checkNested(event)} />
+                            ) : null}
+                            <Button
+                              variant='contained'
+                              startIcon={checkNested(f) ? <TuneIcon /> : null}
+                              onClick={() =>
+                                handlePartRef(event.name, f.assetId, event)
+                              }
+                            >
+                              {f.label}
+                            </Button>
+                          </div>
                         )
                       })}
                     </ButtonGroup>
