@@ -28,10 +28,9 @@ export default function Listing(props) {
         <>
             <h5>Product list</h5>
             {
-
-                products.map((product) => {
+                products ? products.map((product) => {
                     return <ProductListCard product={product} userId={id} />
-                })
+                }) : <h4>No products found, you may need to add the "website" tag to your products</h4>
             }
         </>
     )

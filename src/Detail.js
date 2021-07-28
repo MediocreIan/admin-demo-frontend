@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react'
 import Form from './components/Form'
 import data from './components/Form/data'
 import { useParams } from 'react-router-dom'
+import Price from './Price'
 
 export default function Landing(props) {
     const [product, setProduct] = useState({})
     const [attributes, setAttributes] = useState(null)
+    const [playerLoaded, setPlayerLoaded] = useState(false)
+
     let { userId, productId } = useParams()
 
 
@@ -40,8 +43,13 @@ export default function Landing(props) {
                     window.player = api
                     window.configurator = await api.getConfigurator()
                     await api.when('loaded')
+                    setPlayerLoaded(true)
                     if (attributes === null) {
                         setAttributes(window.configurator.getDisplayAttributes())
+                        const privateConfig = window.player.enableApi('player').getConfigurator()
+                        privateConfig.on('setConfiguration', config => {
+                            setAttributes(window.configurator.getDisplayAttributes())
+                        });
                     }
                 })
         }
@@ -51,13 +59,13 @@ export default function Landing(props) {
             }
         }
     }, [product, attributes, props.match.params.userId])
-    console.log(product)
     return (
         <>
             <div id='player' style={{
                 height: "45vh"
             }}></div>
             {attributes === null || attributes.length === 0 ? null : <Form data={attributes} />}
+            <Price userId={userId} key={playerLoaded} />
         </>
     )
 }
