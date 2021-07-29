@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import NestedForm from './NestedForm'
-
+import "./style.css"
 // UI Elements
 import { makeStyles } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -34,6 +34,9 @@ const useStyles = makeStyles(theme => ({
   },
   root: {
     width: 300
+  },
+  formBtn: {
+    margin: 5
   }
 }))
 
@@ -148,18 +151,34 @@ export default function Landing (props) {
   }
   return (
     <div>
-      {props.data.length === 1 ? <h4>{props.data[currentAttrIndex].name}</h4> : (
-        <div>
-          <ArrowBackIcon onClick={() => setStep('back')} />
-          <h4>{props.data[currentAttrIndex].name}</h4>
+      {props.data.length === 1 ? (
+        <h4>{props.data[currentAttrIndex].name}</h4>
+      ) : (
+        <div style={{ margin: '10px' }}>
+          <center>
+            <ArrowBackIcon
+              onClick={() => setStep('back')}
+              style={{ display: 'inline' }}
+            />
+            <h3 style={{ display: 'inline' }}>
+              {props.data[currentAttrIndex].name}
+            </h3>
 
-          <ArrowForwardIcon onClick={() => setStep('forward')} />
+            <ArrowForwardIcon
+              onClick={() => setStep('forward')}
+              style={{ display: 'inline' }}
+            />
+          </center>
+          {/* <ArrowBackIcon onClick={() => setStep('back')} style={{float: 'left'}} />
+          <h4 style={{float: 'left'}}>{props.data[currentAttrIndex].name}</h4>
+
+          <ArrowForwardIcon onClick={() => setStep('forward')} style={{float: 'left'}} /> */}
         </div>
       )}
 
       <div
         className='form-container'
-        style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}
+        style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', margin: 'auto' }}
       >
         {[props.data[current - 1]].map((event, i) => {
           // console.log('attr index ' + currentAttrIndex)
@@ -206,6 +225,7 @@ export default function Landing (props) {
                             onClick={() =>
                               handleString(event.name, f.value, event)
                             }
+                            className={classes.formBtn}
                           >
                             {f.label}
                           </Button>
@@ -295,6 +315,8 @@ export default function Landing (props) {
                     <ButtonGroup
                       color='primary'
                       orientation={`${matches ? `horizontal` : `vertical`}`}
+                      className={classes.formBtn}
+
                     >
                       {event.values.map(f => {
                         return (
@@ -308,6 +330,7 @@ export default function Landing (props) {
                               onClick={() =>
                                 handlePartRef(event.name, f.assetId, event)
                               }
+                              className={classes.formBtn}
                             >
                               {f.label}
                             </Button>

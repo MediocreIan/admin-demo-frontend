@@ -16,7 +16,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     maxWidth: 345,
-    margin: 'auto'
+    margin: '0 auto 10px',
+
   },
   details: {
     display: 'flex',
@@ -67,6 +68,7 @@ export default function MediaControlCard (props) {
       onClick={() => {
         history.push(`/details/${props.userId}/${props.product.id}`)
       }}
+      
     >
       <CardActionArea>
         <CardMedia
