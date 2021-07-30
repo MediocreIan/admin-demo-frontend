@@ -198,9 +198,6 @@ export default function Landing(props) {
         className='form-container'
         style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', margin: 'auto' }}
       >
-        <p>{attributes.map((e) => {
-          return e.name
-        })}</p>
         {[attributes[current - 1]].map((event, i) => {
           // console.log('attr index ' + currentAttrIndex)
           switch (event.type) {
