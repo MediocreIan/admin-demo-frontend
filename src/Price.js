@@ -22,7 +22,6 @@ export default function Price(props) {
         fetch("https://admin.demo.threekit.com/pricebook/" + userId, requestOptions)
             .then(response => response.json())
             .then(result => {
-                console.log(result)
                 let pricebook = result.pricebooks.filter((book) => {
                     return book.name.toLowerCase() === 'website'
                 })
@@ -31,7 +30,6 @@ export default function Price(props) {
                     pricebook = pricebook[0]
                     if (window.configurator) {
                         let currentPrice = window.configurator.getPrice(pricebook.id, pricebook.currencies[0])
-                        console.log(currentPrice)
                         if (currentPrice !== price) {
                             setPrice(currentPrice)
                         }

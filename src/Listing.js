@@ -6,7 +6,7 @@ import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { useHistory } from 'react-router-dom'
 
-export default function Listing (props) {
+export default function Listing(props) {
   let history = useHistory()
 
   const [products, setProducts] = useState([])
@@ -18,7 +18,6 @@ export default function Listing (props) {
       method: 'GET',
       redirect: 'follow'
     }
-    console.log(`https://admin.demo.threekit.com/products/${id}`)
     fetch(`https://admin.demo.threekit.com/products/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
@@ -27,7 +26,6 @@ export default function Listing (props) {
       .catch(error => console.log('error', error))
   }, [props.match.params.id])
 
-  console.log(products)
   return (
     <>
       <h1>Product list</h1>

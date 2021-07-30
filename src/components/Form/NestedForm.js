@@ -10,7 +10,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
-import Form from './index'
+import NestedConfig from './NestedConfig'
 
 const useStyles = makeStyles({
   list: {
@@ -21,9 +21,9 @@ const useStyles = makeStyles({
   }
 })
 
-export default function TemporaryDrawer (props) {
+export default function TemporaryDrawer(props) {
   useEffect(() => {
-    console.log(props)
+    // console.log(props)
   }, [])
   const classes = useStyles()
   const [state, setState] = React.useState({
@@ -50,7 +50,7 @@ export default function TemporaryDrawer (props) {
       // onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      <Form data={props.data} />
+      <NestedConfig data={props.data} configurator={props.configurator} />
     </div>
   )
 

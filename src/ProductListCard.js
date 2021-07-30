@@ -44,13 +44,10 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function MediaControlCard (props) {
+export default function MediaControlCard(props) {
   const [thumb, setThumb] = useState(null)
 
   useEffect(() => {
-    console.log(
-      `https://preview.threekit.com/api/assets/thumbnail/${props.product.id}?orgId=${props.product.orgId}&failOnEmpty=true`
-    )
     setThumb(
       `https://preview.threekit.com/api/assets/thumbnail/${props.product.id}?orgId=${props.product.orgId}&failOnEmpty=true`
     )
@@ -68,7 +65,7 @@ export default function MediaControlCard (props) {
       onClick={() => {
         history.push(`/details/${props.userId}/${props.product.id}`)
       }}
-      
+
     >
       <CardActionArea>
         <CardMedia

@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, { useState, useEffect } from 'react'
 import NestedForm from './NestedForm'
 import "./style.css"
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Landing (props) {
+export default function Landing(props) {
   // Style
   const classes = useStyles()
   const matches = useMediaQuery('(min-width:600px)')
@@ -49,9 +50,12 @@ export default function Landing (props) {
   const [current, setCurrent] = useState(1)
   const [currentAttr, setCurrentAttr] = useState()
   const [currentAttrIndex, setCurrentAttrIndex] = useState(0)
+  const [screen, setScreen] = useState(props.screen)
 
   // Saving the length of the array in state, probably not needed.
-  const [length, setLength] = useState(props.data.length)
+  const [attributes, setAttributes] = useState(window.configurator.getDisplayAttributes())
+  const [length, setLength] = useState(attributes.length)
+
 
   // Configs
   const [selectSelect, setSelectSelect] = useState('')
@@ -62,18 +66,19 @@ export default function Landing (props) {
   const [isNested, setIsNested] = useState(false)
   const [nestedAttr, setNestedAttr] = useState([])
 
-  function checkNested (attr) {
+  function checkNested(attr, active) {
     window.pl = window.player.enableApi('player')
     window.config = window.pl.configurator
     // console.log("########", attr)
     if (!window.config) {
       return
     }
-    if (window.config.getNestedConfigurator(attr)) {
-      console.log('nested getDisplayAttributes')
-      console.log(
-        window.config.getNestedConfigurator(attr).getDisplayAttributes()
-      )
+
+    if (window.config.getNestedConfigurator(attr) && active === attr.value.assetId) {
+      // console.log('nested getDisplayAttributes')
+      // console.log(
+      //   window.config.getNestedConfigurator(attr).getDisplayAttributes()
+      // )
       return window.config.getNestedConfigurator(attr).getDisplayAttributes()
     } else {
       return false
@@ -82,20 +87,20 @@ export default function Landing (props) {
   }
 
   useEffect(() => {
-    setCurrentAttr(props.data[currentAttrIndex].name)
+    // setCurrentAttr(attributes[currentAttrIndex].name)
 
     // enable private API for nested config
-    // props.data.forEach((element, index) => {
+    // attributes.forEach((element, index) => {
     //   console.log()
     //   if (checkNested(element)) {
     //     setNestedAttr(nestedAttr => [...nestedAttr, index])
     //   }
     //   console.log(nestedAttr)
     // })
-  }, [])
+  }, [attributes, current, currentAttr, currentAttrIndex, isNested, nestedAttr])
 
   // Check to make sure we can't go too far in the steps
-  function setStep (dir, attr) {
+  function setStep(dir, attr) {
     setSelectSelect()
     setNum()
 
@@ -116,43 +121,56 @@ export default function Landing (props) {
     }
   }
 
-  function handleSelect (attr, e) {
+  function handleSelect(attr, e) {
     // setSelectSelect(e.target.value)
     window.configurator.setConfiguration({ [attr]: e.target.value })
+    setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleColor (event, e) {
+  function handleColor(event, e) {
     setColor(e)
     let color = e.rgb
     window.configurator.setConfiguration({
       [event]: { r: color[0] / 255, g: color[1] / 255, b: color[2] / 255 }
     })
+    setAttributes(window.configurator.getDisplayAttributes())
+
   }
-  function handleUpload (e) {
+  function handleUpload(e) {
     setFile(e)
     window.configurator.setConfiguration(e)
+    setAttributes(window.configurator.getDisplayAttributes())
+
   }
-  function handleString (attr, val) {
+  function handleString(attr, val) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: val })
+    setAttributes(window.configurator.getDisplayAttributes())
+    console.log(attributes)
+
   }
-  function handlePartRef (attr, val) {
+  function handlePartRef(attr, val) {
     // This will be set config obj
-    window.configurator.setConfiguration({ [attr]: { assetId: val } })
+    window.configurator.setConfiguration({ [attr]: { assetId: val } }).then(() => {
+      setAttributes(window.configurator.getDisplayAttributes())
+      setLength(window.configurator.getDisplayAttributes().length)
+    })
   }
-  function handleSlide (attr, e, newValue) {
+  function handleSlide(attr, e, newValue) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: newValue })
     setNum(newValue)
+    setAttributes(window.configurator.getDisplayAttributes())
   }
 
-  function handleTextInput (attr, value) {
+  function handleTextInput(attr, value) {
     setText(value)
     window.configurator.setConfiguration({ [attr]: value })
+    setAttributes(window.configurator.getDisplayAttributes())
   }
   return (
     <div>
-      {props.data.length === 1 ? (
-        <h4>{props.data[currentAttrIndex].name}</h4>
+      {attributes.length === 1 ? (
+        <h4>{attributes[currentAttrIndex].name}</h4>
       ) : (
         <div style={{ margin: '10px' }}>
           <center>
@@ -161,7 +179,7 @@ export default function Landing (props) {
               style={{ display: 'inline' }}
             />
             <h3 style={{ display: 'inline' }}>
-              {props.data[currentAttrIndex].name}
+              {attributes[currentAttrIndex].name}
             </h3>
 
             <ArrowForwardIcon
@@ -170,7 +188,7 @@ export default function Landing (props) {
             />
           </center>
           {/* <ArrowBackIcon onClick={() => setStep('back')} style={{float: 'left'}} />
-          <h4 style={{float: 'left'}}>{props.data[currentAttrIndex].name}</h4>
+          <h4 style={{float: 'left'}}>{attributes[currentAttrIndex].name}</h4>
 
           <ArrowForwardIcon onClick={() => setStep('forward')} style={{float: 'left'}} /> */}
         </div>
@@ -180,7 +198,10 @@ export default function Landing (props) {
         className='form-container'
         style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', margin: 'auto' }}
       >
-        {[props.data[current - 1]].map((event, i) => {
+        <p>{attributes.map((e) => {
+          return e.name
+        })}</p>
+        {[attributes[current - 1]].map((event, i) => {
           // console.log('attr index ' + currentAttrIndex)
           switch (event.type) {
             case 'String':
@@ -286,10 +307,11 @@ export default function Landing (props) {
                       <InputLabel id={event.id}>{event.name}</InputLabel>
                       <Select id={event.id} value={selectSelect}>
                         {event.values.map(f => {
+                          console.log(f)
                           return (
                             <div>
-                              {checkNested(event) ? (
-                                <NestedForm />
+                              {checkNested(attributes[currentAttrIndex], f.assetId) ? (
+                                <NestedForm data={checkNested(attributes[currentAttrIndex], f.assetId)} configurator={window.config.getNestedConfigurator(attributes[currentAttrIndex])} />
                               ) : (
                                 <p>no nest</p>
                               )}
@@ -318,15 +340,15 @@ export default function Landing (props) {
                       className={classes.formBtn}
 
                     >
-                      {event.values.map(f => {
+                      {event.values.map((f, i) => {
                         return (
                           <div>
-                            {checkNested(event) ? (
-                              <NestedForm data={checkNested(event)} />
+                            {checkNested(attributes[currentAttrIndex], f.assetId) ? (
+                              <NestedForm data={checkNested(attributes[currentAttrIndex], f.assetId)} configurator={window.config.getNestedConfigurator(attributes[currentAttrIndex])} />
                             ) : null}
                             <Button
                               variant='contained'
-                              startIcon={checkNested(f) ? <TuneIcon /> : null}
+                              startIcon={checkNested(attributes[currentAttrIndex], f.assetId) ? <TuneIcon /> : null}
                               onClick={() =>
                                 handlePartRef(event.name, f.assetId, event)
                               }

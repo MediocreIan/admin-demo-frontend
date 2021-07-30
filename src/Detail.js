@@ -4,7 +4,7 @@ import data from './components/Form/data'
 import { useParams } from 'react-router-dom'
 import Price from './Price'
 
-export default function Landing (props) {
+export default function Landing(props) {
   const [product, setProduct] = useState({})
   const [attributes, setAttributes] = useState(null)
   const [playerLoaded, setPlayerLoaded] = useState(false)
@@ -81,7 +81,7 @@ export default function Landing (props) {
       )}
 
       {attributes === null || attributes.length === 0 ? null : (
-        <Form data={attributes} />
+        <Form data={attributes} setAttributes={setAttributes} screen={'parent'} />
       )}
       <Price userId={userId} key={playerLoaded} />
     </>
