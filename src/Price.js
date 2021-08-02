@@ -44,15 +44,16 @@ export default function Price(props) {
     }, [price])
 
     return (
-        <>
+        <>{price > 0 ? (
             <Box style={{
                 margin: "auto",
                 width: "100%",
                 display: 'flex',
                 alignItems: "center",
                 justifyContent: "center",
-                position: 'fixed',
-                bottom: "5px"
+                position: 'sticky',
+                bottom: "0px",
+                padding: "10px"
             }}>
                 <Paper elevation={6} style={{
                     borderRadius: "10px",
@@ -64,6 +65,6 @@ export default function Price(props) {
                     }}>Price: ${price}</h2>
                 </Paper>
             </Box>
-        </>
+        ) : null}        </>
     )
 }
