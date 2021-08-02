@@ -11,6 +11,7 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import SkipNextIcon from '@material-ui/icons/SkipNext'
 import { useHistory } from 'react-router-dom'
+import Price from './Price'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -79,6 +80,13 @@ export default function MediaControlCard(props) {
           </Typography>
           <Typography variant='body2' color='textSecondary' component='p'>
             {props.product.description}
+            <Price userId={props.userId} styles={{
+              margin: "auto",
+              width: "50%",
+              display: 'flex',
+              alignItems: "center",
+              justifyContent: "center",
+            }}></Price>
           </Typography>
         </CardContent>
       </CardActionArea>
