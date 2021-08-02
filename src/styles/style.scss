@@ -1,0 +1,29 @@
+$grey: #f4f4f4;
+$regularText: #0f2526;
+$lightGreen: #79ac85;
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+div,
+span {
+  color: $regularText;
+}
+
+button:hover,
+svg:hover,
+.MuiTypography-root:hover {
+  color: $lightGreen;
+}
+
+.MuiAppBar-root {
+  background-color: $grey !important;
+  color: $regularText;
+}
+
+:not(:root):fullscreen::backdrop {
+  background: white !important;
+}

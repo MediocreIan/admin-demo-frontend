@@ -1,0 +1,27 @@
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+div,
+span {
+  color: #0f2526;
+}
+
+button:hover,
+svg:hover,
+.MuiTypography-root:hover {
+  color: #79ac85;
+}
+
+.MuiAppBar-root {
+  background-color: #f4f4f4 !important;
+  color: #0f2526;
+}
+
+:not(:root):fullscreen::backdrop {
+  background: white !important;
+}
+
+/*# sourceMappingURL=style.css.map */

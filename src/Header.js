@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Landing (props) {
+export default function Landing(props) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [users, setUsers] = useState([])
 
@@ -46,7 +46,7 @@ export default function Landing (props) {
   const { window } = props
   const container =
     window !== undefined ? () => window().document.body : undefined
-  function toggleDrawer () {
+  function toggleDrawer() {
     setDrawerOpen(!drawerOpen)
   }
   let history = useHistory()
@@ -106,7 +106,9 @@ export default function Landing (props) {
           <Typography variant='h6' className={classes.title}>
             Threekit
           </Typography>
-          <Button color='inherit'>Logo</Button>
+          <Button color='inherit'><img src="/logo.png" style={{
+            height: '50px'
+          }}></img></Button>
         </Toolbar>
       </AppBar>
       <Hidden smUp implementation='css'>
