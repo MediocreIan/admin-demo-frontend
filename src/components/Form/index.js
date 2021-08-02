@@ -66,6 +66,8 @@ export default function Landing(props) {
   const [text, setText] = useState('')
   const [isNested, setIsNested] = useState(false)
   const [nestedAttr, setNestedAttr] = useState([])
+  const [showForm, setShowForm] = useState(true);
+  // const [playerHeight, setPlayerHeight] =useState()
 
   function checkNested(attr, active) {
     window.pl = window.player.enableApi('player')
@@ -168,6 +170,10 @@ export default function Landing(props) {
     window.configurator.setConfiguration({ [attr]: value })
     setAttributes(window.configurator.getDisplayAttributes())
   }
+
+  function toggleShowForm() {
+    setShowForm(!showForm)
+  }
   return (
     <div>
       {attributes.length === 1 ? (
@@ -178,10 +184,13 @@ export default function Landing(props) {
             <ArrowBackIcon
               onClick={() => setStep('back')}
               style={{ display: 'inline' }}
-            />
-            <h3 style={{ display: 'inline' }}>
-              {attributes[currentAttrIndex].name}
-            </h3>
+            /><Button
+              onClick={() => toggleShowForm()}
+            >
+              <h3 style={{ display: 'inline' }} >
+                {attributes[currentAttrIndex].name}
+              </h3>
+            </Button>
 
             <ArrowForwardIcon
               onClick={() => setStep('forward')}
@@ -195,7 +204,7 @@ export default function Landing(props) {
         </div>
       )}
 
-      <Grid
+      {showForm ? (<Grid
         container
         spacing={0}
         justify="space-around"
@@ -386,6 +395,6 @@ export default function Landing(props) {
           }
         })}
       </Grid>
-    </div>
+      ) : null}</div>
   )
 }
