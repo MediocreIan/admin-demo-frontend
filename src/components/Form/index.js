@@ -9,11 +9,12 @@ import Typography from '@material-ui/core/Typography'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import Button from '@material-ui/core/Button'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
+import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import TuneIcon from '@material-ui/icons/Tune'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Paper from '@material-ui/core/Paper'
 
 // import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
@@ -37,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     width: 300
   },
   formBtn: {
-    margin: 5
+    // margin: 5
   }
 }))
 
@@ -194,9 +195,18 @@ export default function Landing(props) {
         </div>
       )}
 
-      <div
-        className='form-container'
-        style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', margin: 'auto' }}
+      <Grid
+        container
+        spacing={0}
+        justify="space-around"
+        justifyContent="center"
+        justifyItems="center"
+        style={{
+          flexGrow: '1',
+          margin: '0 auto 0',
+          alignItems: 'stretch',
+          maxWidth: '1000px'
+        }}
       >
         {[attributes[current - 1]].map((event, i) => {
           // console.log('attr index ' + currentAttrIndex)
@@ -232,25 +242,32 @@ export default function Landing(props) {
                 )
               } else {
                 return (
-                  <div>
-                    <ButtonGroup
-                      color='primary'
-                      orientation={`${matches ? `horizontal` : `vertical`}`}
-                    >
-                      {event.values.map(f => {
-                        return (
-                          <Button
-                            onClick={() =>
-                              handleString(event.name, f.value, event)
-                            }
-                            className={classes.formBtn}
-                          >
-                            {f.label}
-                          </Button>
-                        )
-                      })}
-                    </ButtonGroup>
-                  </div>
+                  event.values.map(f => {
+                    return (
+                      <Grid item xs={12} sm={6} md={4} align="center">
+                        <Button
+                          onClick={() =>
+                            handleString(event.name, f.value, event)
+                          }
+                          style={{
+                            width: "70%",
+                            minHeight: "100%",
+                          }}
+                        >
+                          <Paper
+                            elevation={1}
+                            style={{
+                              textAlign: 'center',
+                              width: "100%",
+                              minHeight: "100%",
+                              color: '#044849',
+
+                            }}>{f.label}</Paper>
+                        </Button>
+                      </Grid>
+                    )
+                  })
+
                 )
               }
               break
@@ -330,40 +347,45 @@ export default function Landing(props) {
                 )
               } else if (event.values.length < 10) {
                 return (
-                  <div>
-                    <ButtonGroup
-                      color='primary'
-                      orientation={`${matches ? `horizontal` : `vertical`}`}
-                      className={classes.formBtn}
-
-                    >
-                      {event.values.map((f, i) => {
-                        return (
-                          <div>
-                            {checkNested(attributes[currentAttrIndex], f.assetId) ? (
-                              <NestedForm data={checkNested(attributes[currentAttrIndex], f.assetId)} configurator={window.config.getNestedConfigurator(attributes[currentAttrIndex])} />
-                            ) : null}
-                            <Button
-                              variant='contained'
-                              startIcon={checkNested(attributes[currentAttrIndex], f.assetId) ? <TuneIcon /> : null}
-                              onClick={() =>
-                                handlePartRef(event.name, f.assetId, event)
-                              }
-                              className={classes.formBtn}
-                            >
-                              {f.label}
-                            </Button>
-                          </div>
-                        )
-                      })}
-                    </ButtonGroup>
-                  </div>
+                  event.values.map((f, i) => {
+                    return (
+                      <Grid item xs={12} sm={6} md={4} align="center"
+                        style={{
+                          // height: "100%"
+                        }}
+                      >                          {checkNested(attributes[currentAttrIndex], f.assetId) ? (
+                        <NestedForm data={checkNested(attributes[currentAttrIndex], f.assetId)} configurator={window.config.getNestedConfigurator(attributes[currentAttrIndex])} />
+                      ) : null}
+                        <Button
+                          startIcon={checkNested(attributes[currentAttrIndex], f.assetId) ? <TuneIcon /> : null}
+                          onClick={() =>
+                            handlePartRef(event.name, f.assetId, event)
+                          }
+                          className={classes.formBtn}
+                          style={{
+                            width: "70%",
+                            minHeight: "100%",
+                            color: '#044849',
+                          }}
+                        >
+                          <Paper
+                            elevation={1}
+                            style={{
+                              textAlign: 'center',
+                              width: "100%",
+                              minHeight: "100%",
+                              color: '#044849',
+                            }}>{f.label}</Paper>
+                        </Button>
+                      </Grid>
+                    )
+                  })
                 )
               }
               break
           }
         })}
-      </div>
+      </Grid>
     </div>
   )
 }

@@ -10,6 +10,7 @@ import Listing from "./Listing";
 import Details from './Detail'
 import Header from './Header'
 import { ContextProvider } from './contextProvider';
+import './styles/style.css'
 
 export default function App() {
 
