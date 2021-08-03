@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import React, { useState, useEffect } from 'react'
 import NestedForm from './NestedForm'
-import "./style.css"
+import './style.css'
 // UI Elements
 import { makeStyles } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -15,7 +15,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import TuneIcon from '@material-ui/icons/Tune'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Paper from '@material-ui/core/Paper'
-
+import FormData from 'form-data'
+import axios from 'axios'
 // import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
@@ -42,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Landing(props) {
+export default function Landing (props) {
   // Style
   const classes = useStyles()
   const matches = useMediaQuery('(min-width:600px)')
@@ -54,9 +55,10 @@ export default function Landing(props) {
   const [screen, setScreen] = useState(props.screen)
 
   // Saving the length of the array in state, probably not needed.
-  const [attributes, setAttributes] = useState(window.configurator.getDisplayAttributes())
+  const [attributes, setAttributes] = useState(
+    window.configurator.getDisplayAttributes()
+  )
   const [length, setLength] = useState(attributes.length)
-
 
   // Configs
   const [selectSelect, setSelectSelect] = useState('')
@@ -67,7 +69,7 @@ export default function Landing(props) {
   const [isNested, setIsNested] = useState(false)
   const [nestedAttr, setNestedAttr] = useState([])
 
-  function checkNested(attr, active) {
+  function checkNested (attr, active) {
     window.pl = window.player.enableApi('player')
     window.config = window.pl.configurator
     // console.log("########", attr)
@@ -75,7 +77,10 @@ export default function Landing(props) {
       return
     }
 
-    if (window.config.getNestedConfigurator(attr) && active === attr.value.assetId) {
+    if (
+      window.config.getNestedConfigurator(attr) &&
+      active === attr.value.assetId
+    ) {
       // console.log('nested getDisplayAttributes')
       // console.log(
       //   window.config.getNestedConfigurator(attr).getDisplayAttributes()
@@ -89,7 +94,6 @@ export default function Landing(props) {
 
   useEffect(() => {
     // setCurrentAttr(attributes[currentAttrIndex].name)
-
     // enable private API for nested config
     // attributes.forEach((element, index) => {
     //   console.log()
@@ -101,7 +105,7 @@ export default function Landing(props) {
   }, [attributes, current, currentAttr, currentAttrIndex, isNested, nestedAttr])
 
   // Check to make sure we can't go too far in the steps
-  function setStep(dir, attr) {
+  function setStep (dir, attr) {
     setSelectSelect()
     setNum()
 
@@ -122,48 +126,88 @@ export default function Landing(props) {
     }
   }
 
-  function handleSelect(attr, e) {
+  function handleSelect (attr, e) {
     // setSelectSelect(e.target.value)
     window.configurator.setConfiguration({ [attr]: e.target.value })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleColor(event, e) {
+  function handleColor (event, e) {
     setColor(e)
     let color = e.rgb
     window.configurator.setConfiguration({
       [event]: { r: color[0] / 255, g: color[1] / 255, b: color[2] / 255 }
     })
     setAttributes(window.configurator.getDisplayAttributes())
-
   }
-  function handleUpload(e) {
-    setFile(e)
-    window.configurator.setConfiguration(e)
+
+  function handleUpload (e) {
+    console.log(e)
+    var fileToRead = document.getElementById('myfile')
+    var files = fileToRead.files
+    console.log('Filename: ' + files[0].name)
+    console.log('Type: ' + files[0].type)
+    console.log('Size: ' + files[0].size + ' bytes')
+
+    setFile(files[0])
+
+    // setFile(e)
+    // window.configurator.setConfiguration(e)
+    // setAttributes(window.configurator.getDisplayAttributes())
+  }
+  function uploadFile (e) {
+    console.log('trying to upload', file)
+
+    // test
+    const postData = new FormData()
+    postData.append('myImage', file)
+    console.log(postData.get('myImage'))
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }
+    axios
+      .post(
+        'http://localhost:3030/files/61016fb5a511c52449456228',
+        postData,
+        config
+      )
+      .then(response => {
+        console.log('The file is successfully uploaded')
+        console.log(response)
+      })
+      .catch(error => {})
+
+    // test
+
+    // formdata.append('files', file, 'logo-upload.png')
+
+    // window.configurator.setConfiguration(e)
     setAttributes(window.configurator.getDisplayAttributes())
-
   }
-  function handleString(attr, val) {
+  function handleString (attr, val) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: val })
     setAttributes(window.configurator.getDisplayAttributes())
     console.log(attributes)
-
   }
-  function handlePartRef(attr, val) {
+  function handlePartRef (attr, val) {
     // This will be set config obj
-    window.configurator.setConfiguration({ [attr]: { assetId: val } }).then(() => {
-      setAttributes(window.configurator.getDisplayAttributes())
-      setLength(window.configurator.getDisplayAttributes().length)
-    })
+    window.configurator
+      .setConfiguration({ [attr]: { assetId: val } })
+      .then(() => {
+        setAttributes(window.configurator.getDisplayAttributes())
+        setLength(window.configurator.getDisplayAttributes().length)
+      })
   }
-  function handleSlide(attr, e, newValue) {
+  function handleSlide (attr, e, newValue) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: newValue })
     setNum(newValue)
     setAttributes(window.configurator.getDisplayAttributes())
   }
 
-  function handleTextInput(attr, value) {
+  function handleTextInput (attr, value) {
     setText(value)
     window.configurator.setConfiguration({ [attr]: value })
     setAttributes(window.configurator.getDisplayAttributes())
@@ -198,9 +242,9 @@ export default function Landing(props) {
       <Grid
         container
         spacing={0}
-        justify="space-around"
-        justifyContent="center"
-        justifyItems="center"
+        justify='space-around'
+        justifyContent='center'
+        justifyItems='center'
         style={{
           flexGrow: '1',
           margin: '0 auto 0',
@@ -241,34 +285,31 @@ export default function Landing(props) {
                   />
                 )
               } else {
-                return (
-                  event.values.map(f => {
-                    return (
-                      <Grid item xs={12} sm={6} md={4} align="center">
-                        <Button
-                          onClick={() =>
-                            handleString(event.name, f.value, event)
-                          }
+                return event.values.map(f => {
+                  return (
+                    <Grid item xs={12} sm={6} md={4} align='center'>
+                      <Button
+                        onClick={() => handleString(event.name, f.value, event)}
+                        style={{
+                          width: '70%',
+                          minHeight: '100%'
+                        }}
+                      >
+                        <Paper
+                          elevation={1}
                           style={{
-                            width: "70%",
-                            minHeight: "100%",
+                            textAlign: 'center',
+                            width: '100%',
+                            minHeight: '100%',
+                            color: '#044849'
                           }}
                         >
-                          <Paper
-                            elevation={1}
-                            style={{
-                              textAlign: 'center',
-                              width: "100%",
-                              minHeight: "100%",
-                              color: '#044849',
-
-                            }}>{f.label}</Paper>
-                        </Button>
-                      </Grid>
-                    )
-                  })
-
-                )
+                          {f.label}
+                        </Paper>
+                      </Button>
+                    </Grid>
+                  )
+                })
               }
               break
             case 'Number':
@@ -312,7 +353,18 @@ export default function Landing(props) {
               break
             case 'Asset':
               if (event.assetType == 'upload') {
-                return <DropzoneArea filesLimit={1} onChange={handleUpload} />
+                return (
+                  <div>
+                    <Button onClick={uploadFile}>Upload</Button>
+                    <input
+                      type='file'
+                      id='myfile'
+                      name='myfile'
+                      onChange={handleUpload}
+                    />
+                    {/* <DropzoneArea filesLimit={1}  /> */}
+                  </div>
+                )
               } else if (event.values.length > 10) {
                 return (
                   <div>
@@ -324,11 +376,20 @@ export default function Landing(props) {
                           console.log(f)
                           return (
                             <div>
-                              {checkNested(attributes[currentAttrIndex], f.assetId) ? (
-                                <NestedForm data={checkNested(attributes[currentAttrIndex], f.assetId)} configurator={window.config.getNestedConfigurator(attributes[currentAttrIndex])} />
-                              ) : (
-                                <p>no nest</p>
-                              )}
+                              {checkNested(
+                                attributes[currentAttrIndex],
+                                f.assetId
+                              ) ? (
+                                <NestedForm
+                                  data={checkNested(
+                                    attributes[currentAttrIndex],
+                                    f.assetId
+                                  )}
+                                  configurator={window.config.getNestedConfigurator(
+                                    attributes[currentAttrIndex]
+                                  )}
+                                />
+                              ) : null}
 
                               <MenuItem
                                 value={f.assetId}
@@ -346,41 +407,66 @@ export default function Landing(props) {
                   </div>
                 )
               } else if (event.values.length < 10) {
-                return (
-                  event.values.map((f, i) => {
-                    return (
-                      <Grid item xs={12} sm={6} md={4} align="center"
-                        style={{
+                return event.values.map((f, i) => {
+                  return (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      align='center'
+                      style={
+                        {
                           // height: "100%"
-                        }}
-                      >                          {checkNested(attributes[currentAttrIndex], f.assetId) ? (
-                        <NestedForm data={checkNested(attributes[currentAttrIndex], f.assetId)} configurator={window.config.getNestedConfigurator(attributes[currentAttrIndex])} />
+                        }
+                      }
+                    >
+                      {' '}
+                      {checkNested(attributes[currentAttrIndex], f.assetId) ? (
+                        <NestedForm
+                          data={checkNested(
+                            attributes[currentAttrIndex],
+                            f.assetId
+                          )}
+                          configurator={window.config.getNestedConfigurator(
+                            attributes[currentAttrIndex]
+                          )}
+                        />
                       ) : null}
-                        <Button
-                          startIcon={checkNested(attributes[currentAttrIndex], f.assetId) ? <TuneIcon /> : null}
-                          onClick={() =>
-                            handlePartRef(event.name, f.assetId, event)
-                          }
-                          className={classes.formBtn}
+                      <Button
+                        // startIcon={
+                        //   checkNested(
+                        //     attributes[currentAttrIndex],
+                        //     f.assetId
+                        //   ) ? (
+                        //     <TuneIcon />
+                        //   ) : null
+                        // }
+                        onClick={() =>
+                          handlePartRef(event.name, f.assetId, event)
+                        }
+                        className={classes.formBtn}
+                        style={{
+                          width: '70%',
+                          minHeight: '100%',
+                          color: '#044849'
+                        }}
+                      >
+                        <Paper
+                          elevation={1}
                           style={{
-                            width: "70%",
-                            minHeight: "100%",
-                            color: '#044849',
+                            textAlign: 'center',
+                            width: '100%',
+                            minHeight: '100%',
+                            color: '#044849'
                           }}
                         >
-                          <Paper
-                            elevation={1}
-                            style={{
-                              textAlign: 'center',
-                              width: "100%",
-                              minHeight: "100%",
-                              color: '#044849',
-                            }}>{f.label}</Paper>
-                        </Button>
-                      </Grid>
-                    )
-                  })
-                )
+                          {f.label}
+                        </Paper>
+                      </Button>
+                    </Grid>
+                  )
+                })
               }
               break
           }
