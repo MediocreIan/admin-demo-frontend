@@ -15,6 +15,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import TuneIcon from '@material-ui/icons/Tune'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Paper from '@material-ui/core/Paper'
+import StringComponent from './String'
+import NumberInput from './NumberInput'
 
 // import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
@@ -221,91 +223,21 @@ export default function Landing(props) {
           // console.log('attr index ' + currentAttrIndex)
           switch (event.type) {
             case 'String':
-              if (event.values.length > 10) {
-                return (
-                  <div>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel id={event.id}>{event.name}</InputLabel>
-                      <Select id={event.id} value={selectSelect}>
-                        {event.values.map(f => {
-                          return (
-                            <MenuItem
-                              value={f.value}
-                              onClick={() => handleString(event.name, f.value)}
-                            >
-                              {f.label}
-                            </MenuItem>
-                          )
-                        })}
-                      </Select>
-                    </FormControl>
-                  </div>
-                )
-              } else if (event.values.length == 0) {
-                return (
-                  <TextField
-                    value={text}
-                    onChange={e => handleTextInput(event.name, e.target.value)}
-                    placeholder={'Personalize your item'}
-                  />
-                )
-              } else {
-                return (
-                  event.values.map(f => {
-                    return (
-                      <Grid item xs={12} sm={6} md={4} align="center">
-                        <Button
-                          onClick={() =>
-                            handleString(event.name, f.value, event)
-                          }
-                          style={{
-                            width: "70%",
-                            minHeight: "100%",
-                          }}
-                        >
-                          <Paper
-                            elevation={1}
-                            style={{
-                              textAlign: 'center',
-                              width: "100%",
-                              minHeight: "100%",
-                              color: '#044849',
+              <StringComponent
+                e={event}
+                handleString={handleString}
+                handleTextInput={handleTextInput}
+                selectSelect={selectSelect}
+                text={text}
 
-                            }}>{f.label}</Paper>
-                        </Button>
-                      </Grid>
-                    )
-                  })
-
-                )
-              }
+              />
               break
             case 'Number':
-              return (
-                <div className={classes.root}>
-                  <Typography id={event.id} gutterBottom>
-                    {event.name}
-                  </Typography>
-                  <Slider
-                    defaultValue={event.defaultValue}
-                    value={num}
-                    // getAriaValueText={valuetext}
-                    aria-labelledby={event.id}
-                    valueLabelDisplay='auto'
-                    step={event.step}
-                    marks
-                    onChange={(e, newValue) =>
-                      handleSlide(event.name, e, newValue)
-                    }
-                    min={event.min}
-                    max={event.max}
-                  />
-                </div>
-
-                // <li>
-                //   Number {e.name} - min: {e.min} max: {e.max}
-                // </li>
-              )
+              <NumberInput
+                event={event}
+                handleSlide={handleSlide}
+                num={num}
+              />
               break
             case 'Color':
               return (
