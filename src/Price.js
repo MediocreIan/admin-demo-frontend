@@ -10,12 +10,12 @@ export default function Price(props) {
     useEffect(() => {
         let userId = props.userId
 
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer 34613bc7-dd6d-41f3-b1e0-6098b29b5d1a");
+        // var myHeaders = new Headers();
+        // myHeaders.append("Authorization", "Bearer 34613bc7-dd6d-41f3-b1e0-6098b29b5d1a");
 
         var requestOptions = {
             method: 'GET',
-            headers: myHeaders,
+            // headers: myHeaders,
             redirect: 'follow'
         };
 
