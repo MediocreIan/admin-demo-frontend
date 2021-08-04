@@ -49,12 +49,13 @@ export default function Price (props) {
               if (currentPrice !== price) {
                 setPrice(currentPrice)
               }
+              console.log(pricebook)
             }
           }
         })
         .catch(error => console.log('error', error))
     } else {
-      if (window.configurator) {
+      if (window.configurator && pricebook.length > 0) {
         console.log(pricebook)
         let currentPrice = window.configurator.getPrice(
           pricebook[0].id,

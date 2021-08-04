@@ -262,7 +262,10 @@ export default function Landing (props) {
                 break
               case 'Asset':
                 if (event.assetType == 'upload') {
-                  return <DropzoneArea filesLimit={1} onChange={handleUpload} />
+                  return (
+                  // need to build this
+                  <p>Image upload is not yet supported. </p>
+                    )
                 } else if (event.values.length > 10) {
                   return (
                     <div>
