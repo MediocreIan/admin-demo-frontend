@@ -3,20 +3,26 @@ import Form from './components/Form'
 import data from './components/Form/data'
 import { useParams } from 'react-router-dom'
 import Price from './Price'
+import { useContextData, useUpdateContext } from './contextProvider';
+
+
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { useHistory } from 'react-router-dom'
 
-export default function Landing (props) {
+export default function Landing(props) {
   const [product, setProduct] = useState({})
   const [attributes, setAttributes] = useState(null)
   const [playerLoaded, setPlayerLoaded] = useState(false)
   const [err, setErr] = useState(null)
+  const [api, setApi] = useState();
+
   const [user, setUser] = useState(null)
   let { userId, productId } = useParams()
   let history = useHistory()
 
+  const locale = useContextData()
   useEffect(() => {
     // get user
     fetch(
@@ -26,11 +32,11 @@ export default function Landing (props) {
       .then(response => response.json())
       .then(result => {
         result.forEach(e => {
-          if(e._id == window.location.pathname.split('/')[2]){
-            setUser (e.name)
+          if (e._id == window.location.pathname.split('/')[2]) {
+            setUser(e.name)
           }
         })
-       
+
       })
       .catch(error => console.log('error', error))
     // end get user
@@ -46,21 +52,26 @@ export default function Landing (props) {
         .then(response => response.json())
         .then(result => {
           setProduct(result)
-          console.log('product',result)
+          console.log('product', result)
         })
         .catch(error => console.log('error', error))
     }
     if (!product.publicToken) {
       return
     } else {
+      let config = {
+        authToken: product.publicToken,
+        el: document.getElementById('player'),
+        assetId: product.id,
+        showConfigurator: false,
+        showAR: true,
+        locale: "FR"
+      }
+      // if (locale) {
+      //   config.locale = locale
+      // }
       window
-        .threekitPlayer({
-          authToken: product.publicToken,
-          el: document.getElementById('player'),
-          assetId: product.id,
-          showConfigurator: false,
-          showAR: true
-        })
+        .threekitPlayer(config)
         .then(async api => {
           window.player = api
           window.configurator = await api.getConfigurator()
