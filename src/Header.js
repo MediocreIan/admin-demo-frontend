@@ -116,10 +116,14 @@ export default function Landing (props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' className={classes.title}>
+          <Typography variant='h6' className={classes.title} onClick={() => {
+            history.push(`/`)
+          }}>
             Threekit
           </Typography>
-          <Button color='inherit'>
+          <Button color='inherit' onClick={() => {
+            history.push(`/`)
+          }}>
             <img
               src='/logo.png'
               style={{

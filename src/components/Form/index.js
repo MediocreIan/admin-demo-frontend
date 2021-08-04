@@ -193,7 +193,10 @@ export default function Landing (props) {
   return (
     <div>
       {attributes.length === 1 ? (
+        <center>
         <h4>{attributes[currentAttrIndex].name}</h4>
+
+        </center>
       ) : (
         <div style={{ margin: '10px' }}>
           <center>
