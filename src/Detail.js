@@ -83,7 +83,7 @@ export default function Landing(props) {
       )}
 
       {attributes === null || attributes.length === 0 ? null : (
-        <Form data={attributes} setAttributes={setAttributes} screen={'parent'} userId={userId} key={playerLoaded} />
+        <Form data={attributes} setAttributes={setAttributes} screen={'parent'} userId={userId} key={playerLoaded} playerLoaded={playerLoaded} />
       )}
     </>
   )

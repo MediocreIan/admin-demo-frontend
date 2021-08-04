@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Landing(props) {
+export default function Landing (props) {
   // Style
   const classes = useStyles()
   const matches = useMediaQuery('(min-width:600px)')
@@ -73,7 +73,7 @@ export default function Landing(props) {
   const [showForm, setShowForm] = useState(true)
   // const [playerHeight, setPlayerHeight] =useState()
 
-  function checkNested(attr, active) {
+  function checkNested (attr, active) {
     window.pl = window.player.enableApi('player')
     window.config = window.pl.configurator
     // console.log("########", attr)
@@ -97,6 +97,7 @@ export default function Landing(props) {
   }
 
   useEffect(() => {
+    console.log("playerloaded", props.playerLoaded)
     // setCurrentAttr(attributes[currentAttrIndex].name)
     // enable private API for nested config
     // attributes.forEach((element, index) => {
@@ -106,10 +107,10 @@ export default function Landing(props) {
     //   }
     //   console.log(nestedAttr)
     // })
-  }, [attributes, current, currentAttr, currentAttrIndex, isNested, nestedAttr])
+  }, [attributes, current, currentAttr, currentAttrIndex, isNested, nestedAttr, props])
 
   // Check to make sure we can't go too far in the steps
-  function setStep(dir, attr) {
+  function setStep (dir, attr) {
     setSelectSelect()
     setNum()
 
@@ -130,12 +131,12 @@ export default function Landing(props) {
     }
   }
 
-  function handleSelect(attr, e) {
+  function handleSelect (attr, e) {
     // setSelectSelect(e.target.value)
     window.configurator.setConfiguration({ [attr]: e.target.value })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleColor(event, e) {
+  function handleColor (event, e) {
     setColor(e)
     let color = e.rgb
     window.configurator.setConfiguration({
@@ -143,18 +144,18 @@ export default function Landing(props) {
     })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleUpload(e) {
+  function handleUpload (e) {
     setFile(e)
     window.configurator.setConfiguration(e)
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleString(attr, val) {
+  function handleString (attr, val) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: val })
     setAttributes(window.configurator.getDisplayAttributes())
     console.log(attributes)
   }
-  function handlePartRef(attr, val) {
+  function handlePartRef (attr, val) {
     // This will be set config obj
     window.configurator
       .setConfiguration({ [attr]: { assetId: val } })
@@ -163,20 +164,20 @@ export default function Landing(props) {
         setLength(window.configurator.getDisplayAttributes().length)
       })
   }
-  function handleSlide(attr, e, newValue) {
+  function handleSlide (attr, e, newValue) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: newValue })
     setNum(newValue)
     setAttributes(window.configurator.getDisplayAttributes())
   }
 
-  function handleTextInput(attr, value) {
+  function handleTextInput (attr, value) {
     setText(value)
     window.configurator.setConfiguration({ [attr]: value })
     setAttributes(window.configurator.getDisplayAttributes())
   }
 
-  function toggleShowForm() {
+  function toggleShowForm () {
     setShowForm(!showForm)
   }
   return (
@@ -375,20 +376,23 @@ export default function Landing(props) {
           })}
         </Grid>
       ) : null}
-      <Price
-        userId={props.userId}
-        key={attributes}
-        styles={{
-          margin: "auto",
-          width: "100%",
-          display: 'flex',
-          alignItems: "center",
-          justifyContent: "center",
-          position: 'sticky',
-          bottom: "0px",
-          padding: "10px"
-        }}
-      />
+      {props.playerLoaded ? (
+        <Price
+          userId={props.userId}
+          key={attributes}
+          loaded={props.playerLoaded}
+          styles={{
+            margin: 'auto',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'sticky',
+            bottom: '0px',
+            padding: '10px'
+          }}
+        />
+      ) : null}
     </div>
   )
 }
