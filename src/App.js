@@ -26,7 +26,7 @@ export default function App() {
           <Route path="/listing/:name/:id/:publicToken" render={(props) => (
             <Listing key={props.match.params.pageid} {...props} />)
           } />
-          <Route path="/landing">
+          <Route path="/">
             <Landing />
           </Route>
         </Switch>

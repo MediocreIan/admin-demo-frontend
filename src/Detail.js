@@ -3,16 +3,37 @@ import Form from './components/Form'
 import data from './components/Form/data'
 import { useParams } from 'react-router-dom'
 import Price from './Price'
+import Breadcrumbs from '@material-ui/core/Breadcrumbs'
+import Link from '@material-ui/core/Link'
+import Typography from '@material-ui/core/Typography'
+import { useHistory } from 'react-router-dom'
 
 export default function Landing (props) {
   const [product, setProduct] = useState({})
   const [attributes, setAttributes] = useState(null)
   const [playerLoaded, setPlayerLoaded] = useState(false)
   const [err, setErr] = useState(null)
-
+  const [user, setUser] = useState(null)
   let { userId, productId } = useParams()
+  let history = useHistory()
 
   useEffect(() => {
+    // get user
+    fetch(
+      `https://admin.demo.threekit.com/all`,
+      requestOptions
+    )
+      .then(response => response.json())
+      .then(result => {
+        result.forEach(e => {
+          if(e._id == window.location.pathname.split('/')[2]){
+            setUser (e.name)
+          }
+        })
+       
+      })
+      .catch(error => console.log('error', error))
+    // end get user
     var requestOptions = {
       method: 'GET',
       redirect: 'follow'
@@ -25,6 +46,7 @@ export default function Landing (props) {
         .then(response => response.json())
         .then(result => {
           setProduct(result)
+          console.log('product',result)
         })
         .catch(error => console.log('error', error))
     }
@@ -66,6 +88,27 @@ export default function Landing (props) {
   }, [product, attributes, props.match.params.userId])
   return (
     <>
+      <Breadcrumbs aria-label='breadcrumb'>
+        <Link
+          color='inherit'
+          onClick={() => {
+            history.push(`/`)
+          }}
+        >
+          Home
+        </Link>
+        <Link
+          color='inherit'
+          onClick={() => {
+            history.goBack()
+          }}
+        >
+          {user}
+        </Link>
+        <Typography color='textPrimary'>
+          {product.name}
+        </Typography>
+      </Breadcrumbs>
       {!err ? (
         <div
           id='player'

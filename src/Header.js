@@ -8,12 +8,13 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import Drawer from '@material-ui/core/Drawer'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import Hidden from '@material-ui/core/Hidden'
 import { useHistory } from 'react-router-dom'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+
 
 const drawerWidth = '100%'
 
@@ -38,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Landing(props) {
+export default function Landing (props) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [users, setUsers] = useState([])
 
@@ -46,7 +47,7 @@ export default function Landing(props) {
   const { window } = props
   const container =
     window !== undefined ? () => window().document.body : undefined
-  function toggleDrawer() {
+  function toggleDrawer () {
     setDrawerOpen(!drawerOpen)
   }
   let history = useHistory()
@@ -70,6 +71,17 @@ export default function Landing(props) {
       <div className={classes.toolbar} />
       {/* <Divider /> */}
       <List>
+        <ListItem
+          button
+          key='home-btn'
+          onClick={() => {
+            history.push(`/`)
+            toggleDrawer()
+          }}
+        >
+          <ListItemText primary={'Home'} />
+        </ListItem>
+        <Divider/>
         {users.map((user, index) => (
           <ListItem
             button
@@ -81,6 +93,7 @@ export default function Landing(props) {
               toggleDrawer()
             }}
           >
+           
             <ListItemText primary={user.name} />
           </ListItem>
         ))}
@@ -106,9 +119,14 @@ export default function Landing(props) {
           <Typography variant='h6' className={classes.title}>
             Threekit
           </Typography>
-          <Button color='inherit'><img src="/logo.png" style={{
-            height: '50px'
-          }}></img></Button>
+          <Button color='inherit'>
+            <img
+              src='/logo.png'
+              style={{
+                height: '50px'
+              }}
+            ></img>
+          </Button>
         </Toolbar>
       </AppBar>
       <Hidden smUp implementation='css'>

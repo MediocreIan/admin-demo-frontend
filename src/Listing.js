@@ -5,8 +5,9 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { useHistory } from 'react-router-dom'
+import Grid from '@material-ui/core/Grid'
 
-export default function Listing(props) {
+export default function Listing (props) {
   let history = useHistory()
 
   const [products, setProducts] = useState([])
@@ -39,21 +40,32 @@ export default function Listing(props) {
           Home
         </Link>
         <Typography color='textPrimary'>
-          {window.location.pathname.split('/')[2].replaceAll("%20", " ").trim()}
+          {window.location.pathname
+            .split('/')[2]
+            .replaceAll('%20', ' ')
+            .trim()}
         </Typography>
       </Breadcrumbs>
-      {products ? (
-        products.map(product => {
-          return (
-            <ProductListCard product={product} userId={id} key={product.id} />
-          )
-        })
-      ) : (
-        <h4>
-          No products found, you may need to add the "website" tag to your
-          products
-        </h4>
-      )}
+      <Grid container justifyContent='center' spacing={3}>
+        {products ? (
+          products.map(product => {
+            return (
+              <Grid item>
+                <ProductListCard
+                  product={product}
+                  userId={id}
+                  key={product.id}
+                />
+              </Grid>
+            )
+          })
+        ) : (
+          <h4>
+            No products found, you may need to add the "website" tag to your
+            products
+          </h4>
+        )}
+      </Grid>
     </>
   )
 }
