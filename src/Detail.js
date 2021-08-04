@@ -83,18 +83,8 @@ export default function Landing(props) {
       )}
 
       {attributes === null || attributes.length === 0 ? null : (
-        <Form data={attributes} setAttributes={setAttributes} screen={'parent'} />
+        <Form data={attributes} setAttributes={setAttributes} screen={'parent'} userId={userId} key={playerLoaded} />
       )}
-      <Price userId={userId} key={playerLoaded} styles={{
-        margin: "auto",
-        width: "100%",
-        display: 'flex',
-        alignItems: "center",
-        justifyContent: "center",
-        position: 'sticky',
-        bottom: "0px",
-        padding: "10px"
-      }} />
     </>
   )
 }
