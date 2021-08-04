@@ -142,11 +142,9 @@ export default function Landing(props) {
     function handleString(attr, val) {
         // This will be set config obj
         props.configurator.setConfiguration({ [attr]: val })
-        console.log(attr)
 
     }
     function handlePartRef(attr, val) {
-        console.log(attr)
         // This will be set config obj
         props.configurator.setConfiguration({ [attr]: { assetId: val } }).then(() => {
             setLength(window.configurator.getDisplayAttributes().length)
@@ -335,7 +333,6 @@ export default function Landing(props) {
 
                                         >
                                             {event.values.map((f, i) => {
-                                                console.log(props.data[currentAttrIndex])
                                                 return (
                                                     <div>
                                                         {checkNested(props.data[currentAttrIndex]) ? (

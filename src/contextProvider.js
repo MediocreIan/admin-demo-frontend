@@ -13,12 +13,9 @@ export function useUpdateContext() {
 }
 
 export function ContextProvider({ children }) {
-    const [context, setContext] = useState({
-        //context goes here
-        test: 'test'
-    });
+    const [context, setContext] = useState(null);
     function setTest(string) {
-        setContext({ ...context, test: string })
+        setContext(string)
     }
     return (
         <Context.Provider value={context}>

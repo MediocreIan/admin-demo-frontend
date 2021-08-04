@@ -3,15 +3,20 @@ import Form from './components/Form'
 import data from './components/Form/data'
 import { useParams } from 'react-router-dom'
 import Price from './Price'
+import { useContextData, useUpdateContext } from './contextProvider';
 
-export default function Landing (props) {
+
+export default function Landing(props) {
+
   const [product, setProduct] = useState({})
   const [attributes, setAttributes] = useState(null)
   const [playerLoaded, setPlayerLoaded] = useState(false)
   const [err, setErr] = useState(null)
+  const [api, setApi] = useState();
 
   let { userId, productId } = useParams()
 
+  const locale = useContextData()
   useEffect(() => {
     var requestOptions = {
       method: 'GET',
@@ -31,14 +36,19 @@ export default function Landing (props) {
     if (!product.publicToken) {
       return
     } else {
+      let config = {
+        authToken: product.publicToken,
+        el: document.getElementById('player'),
+        assetId: product.id,
+        showConfigurator: false,
+        showAR: true,
+        locale: "FR"
+      }
+      // if (locale) {
+      //   config.locale = locale
+      // }
       window
-        .threekitPlayer({
-          authToken: product.publicToken,
-          el: document.getElementById('player'),
-          assetId: product.id,
-          showConfigurator: false,
-          showAR: true
-        })
+        .threekitPlayer(config)
         .then(async api => {
           window.player = api
           window.configurator = await api.getConfigurator()

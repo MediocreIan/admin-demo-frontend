@@ -7,6 +7,6 @@ const MyButton = styled(Button)({
 
 });
 
-export default function StyledComponents() {
+export default function StyledComponents(props) {
     return <MyButton>Styled Components</MyButton>;
 }
