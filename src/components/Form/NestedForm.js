@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
 import NestedConfig from './NestedConfig'
+import TuneIcon from '@material-ui/icons/Tune'
 
 const useStyles = makeStyles({
   list: {
@@ -57,7 +58,7 @@ export default function TemporaryDrawer(props) {
   return (
     <div>
       <React.Fragment key={'bottom'}>
-        <Button variant="contained" onClick={toggleDrawer('bottom', true)} color="primary">Configure</Button>
+        <TuneIcon variant="contained" onClick={toggleDrawer('bottom', true)} color="primary">Configure</TuneIcon>
         <Drawer
           anchor={'bottom'}
           open={state['bottom']}

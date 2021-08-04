@@ -67,6 +67,7 @@ export default function Landing(props) {
 
   // Configs
   const [selectSelect, setSelectSelect] = useState('')
+  const [partRefSelect, setPartRefSelect] = useState('')
   const [color, setColor] = useState('#000')
   const [file, setFile] = useState()
   const [num, setNum] = useState(0)
@@ -99,7 +100,7 @@ export default function Landing(props) {
   }
 
   useEffect(() => {
-    console.log("playerloaded", props.playerLoaded)
+    console.log('playerloaded', props.playerLoaded)
     // setCurrentAttr(attributes[currentAttrIndex].name)
     // enable private API for nested config
     // attributes.forEach((element, index) => {
@@ -156,13 +157,15 @@ export default function Landing(props) {
     window.configurator.setConfiguration({ [attr]: val })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handlePartRef(attr, val) {
+  function handlePartRef(attr, val, event) {
     // This will be set config obj
+
     window.configurator
       .setConfiguration({ [attr]: { assetId: val } })
       .then(() => {
         setAttributes(window.configurator.getDisplayAttributes())
         setLength(window.configurator.getDisplayAttributes().length)
+        // console.log(val)
       })
   }
   function handleSlide(attr, e, newValue) {
@@ -206,7 +209,10 @@ export default function Landing(props) {
   return (
     <div>
       {attributes.length === 1 ? (
-        <h4>{attributes[currentAttrIndex].name}</h4>
+        <center>
+          <h4>{attributes[currentAttrIndex].name}</h4>
+
+        </center>
       ) : (
         <div style={{ margin: '10px' }}>
           <center>
@@ -287,7 +293,7 @@ export default function Landing(props) {
                 if (event.assetType == 'upload') {
                   return (
                     // need to build this
-                    <p>Image upload is not yet supported. </p>
+                    <p>Image upload is not yet supported on this app. </p>
                   )
                 } else if (event.values.length > 10) {
                   return (
@@ -295,33 +301,43 @@ export default function Landing(props) {
                       {/* <p>Part-Ref Long {event.name}</p> */}
                       <FormControl className={classes.formControl}>
                         <InputLabel id={event.id}>{event.name}</InputLabel>
-                        <Select id={event.id} value={selectSelect}>
+                        <div>
+                          <p >{partRefSelect}</p>
+                          {event.values.map(g => {
+                            return checkNested(
+                              attributes[currentAttrIndex],
+                              g.assetId
+                            ) ? (
+                              <NestedForm
+                                style={{ display: 'inline' }}
+                                data={checkNested(
+                                  attributes[currentAttrIndex],
+                                  g.assetId
+                                )}
+                                configurator={window.config.getNestedConfigurator(
+                                  attributes[currentAttrIndex]
+                                )}
+                              />
+                            ) : null
+                          })}
+                        </div>
+
+                        <Select
+                          id={event.id}
+                          value={partRefSelect}
+                          style={{ minWidth: 250 }}
+                        >
                           {event.values.map(f => {
-                            console.log(f)
                             return (
                               <div>
-                                {checkNested(
-                                  attributes[currentAttrIndex],
-                                  f.assetId
-                                ) ? (
-                                  <NestedForm
-                                    data={checkNested(
-                                      attributes[currentAttrIndex],
-                                      f.assetId
-                                    )}
-                                    configurator={window.config.getNestedConfigurator(
-                                      attributes[currentAttrIndex]
-                                    )}
-                                  />
-                                ) : (
-                                  <p>no nest</p>
-                                )}
-
                                 <MenuItem
                                   value={f.assetId}
-                                  onClick={() =>
-                                    handlePartRef(event.name, f.assetId, event)
-                                  }
+                                  onClick={() => {
+                                    handlePartRef(event.name, f.assetId)
+                                    console.log('#####', f.assetId)
+                                    console.log('!!!!!!!!!', partRefSelect)
+                                    setPartRefSelect(f.label)
+                                  }}
                                 >
                                   {f.label}
                                 </MenuItem>
@@ -348,7 +364,7 @@ export default function Landing(props) {
                         }
                       >
                         {' '}
-                        {checkNested(
+                        {/* {checkNested(
                           attributes[currentAttrIndex],
                           f.assetId
                         ) ? (
@@ -361,14 +377,22 @@ export default function Landing(props) {
                               attributes[currentAttrIndex]
                             )}
                           />
-                        ) : null}
+                        ) : null} */}
                         <Button
                           startIcon={
                             checkNested(
                               attributes[currentAttrIndex],
                               f.assetId
                             ) ? (
-                              <TuneIcon />
+                              <NestedForm
+                                data={checkNested(
+                                  attributes[currentAttrIndex],
+                                  f.assetId
+                                )}
+                                configurator={window.config.getNestedConfigurator(
+                                  attributes[currentAttrIndex]
+                                )}
+                              />
                             ) : null
                           }
                           onClick={() =>

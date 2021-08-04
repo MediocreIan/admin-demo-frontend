@@ -17,8 +17,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     maxWidth: 345,
+    minWidth: 345,
     margin: '0 auto 10px',
-
+height: 395
   },
   details: {
     display: 'flex',
