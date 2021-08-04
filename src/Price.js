@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 
-export default function Price (props) {
+export default function Price(props) {
   const [price, setPrice] = useState(0)
   const [currencies, setCurrencies] = useState(0)
   const [activeCurrency, setCurrency] = useState(0)
@@ -10,7 +10,11 @@ export default function Price (props) {
   const [pricebook, setPricebook] = useState(null)
 
   useEffect(() => {
-    console.log('RELOAD')
+    getPrice()
+  }, [price, props])
+
+  function getPrice(currency) {
+
     // setAttributes(props.attributes)
     let userId = props.userId
 
@@ -40,34 +44,37 @@ export default function Price (props) {
             if (ApiPricebook) {
               setPricebook(ApiPricebook)
               ApiPricebook = ApiPricebook[0]
-
+              setCurrencies(ApiPricebook.currencies)
+              if (!activeCurrency) {
+                setCurrency(ApiPricebook.currencies[0])
+              }
               let currentPrice = window.configurator.getPrice(
                 ApiPricebook.id,
-                ApiPricebook.currencies[0]
+                activeCurrency
               )
-              console.log(ApiPricebook)
               if (currentPrice !== price) {
                 setPrice(currentPrice)
               }
-              console.log(pricebook)
             }
           }
         })
         .catch(error => console.log('error', error))
     } else {
       if (window.configurator && pricebook.length > 0) {
-        console.log(pricebook)
+        console.log("active currency", activeCurrency)
         let currentPrice = window.configurator.getPrice(
           pricebook[0].id,
-          pricebook[0].currencies[0]
+          activeCurrency
         )
         if (currentPrice !== price) {
           setPrice(currentPrice)
-          console.log('currentprice', currentPrice)
         }
       }
     }
-  }, [price, props])
+  }
+  useEffect(() => {
+    getPrice()
+  }, [activeCurrency]);
 
   return (
     <div key={props.key}>
@@ -91,6 +98,13 @@ export default function Price (props) {
           </Paper>
         </Box>
       ) : null}{' '}
+      {currencies ? currencies.map(currency => {
+        return (
+          <p onClick={(e) => {
+            setCurrency(e.target.innerHTML)
+          }}>{currency}</p>
+        )
+      }) : null}
     </div>
   )
 }
