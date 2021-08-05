@@ -1,5 +1,5 @@
 import { Translate } from '@material-ui/icons';
-import Select from '@material-ui/core/NativeSelect'
+import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import React, { useState, useEffect } from 'react';
 import { useContextData, useUpdateContext } from './contextProvider';
@@ -10,10 +10,10 @@ export default function Locale(props) {
     const setData = useUpdateContext()
 
     useEffect(async () => {
-        console.log("locale")
         let languages = await getLanguages()
         setLanguages(languages)
         props.translate()
+
     }, [props]);
 
     async function getLanguages() {
@@ -30,7 +30,6 @@ export default function Locale(props) {
             .then(response => response.json())
             .catch(error => console.log('error', error));
 
-        console.log(translations.values)
         return translations.values
     }
 
@@ -38,7 +37,7 @@ export default function Locale(props) {
 
 
 
-    return (
+    return (props.playerLoaded ? (
         <div
             style={{
                 position: 'absolute',
@@ -52,8 +51,9 @@ export default function Locale(props) {
                 }}
             >language</p>
             <Select
-                onChange={(e) => {
+                onChange={async (e) => {
                     window.player.setLocale(e.target.value)
+                    window.player.getTranslations()
                     props.translate()
                 }
                 }
@@ -69,6 +69,6 @@ export default function Locale(props) {
                     }) : null
                 }
             </Select >
-        </div>
+        </div>) : null
     )
 }

@@ -196,6 +196,7 @@ export default function Landing(props) {
 
   function translate() {
     let translations = window.player.getTranslations()
+    console.log(window.player.getTranslations())
     if (translations && window.configurator.getDisplayAttributes()) {
       let newAttributes = window.configurator
         .getDisplayAttributes()
@@ -451,6 +452,7 @@ export default function Landing(props) {
         setAttributes={setAttributes}
         userId={props.userId}
         translate={translate}
+        playerLoaded={props.playerLoaded}
       />
     </div>
   )
