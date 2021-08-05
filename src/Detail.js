@@ -116,14 +116,41 @@ export default function Landing (props) {
         <Typography color='textPrimary'>{product.name}</Typography>
       </Breadcrumbs>
       {!err ? (
-        <div
-          id='player'
-          style={{
-            height: '50vh',
-            margin: '5px auto 5px',
-            width: '80vw'
-          }}
-        ></div>
+        <div>
+          <Typography variant={'h4'} style={{textAlign: 'center'}}>
+            {product.name}
+          </Typography>
+         
+          {product.description && playerLoaded ? (
+            <div
+              style={{
+                textAlign: 'center',
+                color: '#0f2526',
+                width: '70vw',
+                margin: 'auto'
+              }}
+            >
+              {/* <Paper elevation={2} style={{ padding: '15px' }}> */}
+              <Typography
+                noWrap={wrap}
+                onClick={() => (wrap ? setWrap(false) : setWrap(true))}
+                className='product-description'
+              >
+                {product.description}
+              </Typography>
+              {/* </Paper> */}
+            </div>
+          ) : null}
+
+          <div
+            id='player'
+            style={{
+              height: '50vh',
+              margin: '5px auto 5px',
+              width: '80vw'
+            }}
+          ></div>
+        </div>
       ) : (
         <h4>
           There was an error loading this asset. Please ensure the token,
@@ -141,26 +168,6 @@ export default function Landing (props) {
           playerLoaded={playerLoaded}
         />
       )}
-      {product.description && playerLoaded? (
-        <div
-          style={{
-            textAlign: 'center',
-            color: '#0f2526',
-            width: '70vw',
-            margin: 'auto',
-          }}
-        >
-          <Paper elevation={2} style={{padding: '15px'}}>
-          <Typography
-            noWrap={wrap}
-            onClick={() => (wrap ? setWrap(false) : setWrap(true))}
-            className='product-description'
-          >
-            {product.description}
-          </Typography>
-          </Paper>
-        </div>
-      ) : null}
     </>
   )
 }
