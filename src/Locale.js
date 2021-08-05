@@ -1,5 +1,5 @@
 import { Translate } from '@material-ui/icons';
-import Select from '@material-ui/core/Select'
+import Select from '@material-ui/core/NativeSelect'
 import MenuItem from '@material-ui/core/MenuItem'
 import React, { useState, useEffect } from 'react';
 import { useContextData, useUpdateContext } from './contextProvider';
