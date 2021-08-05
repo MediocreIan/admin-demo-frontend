@@ -3,20 +3,21 @@ import Form from './components/Form'
 import data from './components/Form/data'
 import { useParams } from 'react-router-dom'
 import Price from './Price'
-import { useContextData, useUpdateContext } from './contextProvider';
-
+import { useContextData, useUpdateContext } from './contextProvider'
+import Paper from '@material-ui/core/Paper'
 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { useHistory } from 'react-router-dom'
 
-export default function Landing(props) {
+export default function Landing (props) {
   const [product, setProduct] = useState({})
   const [attributes, setAttributes] = useState(null)
   const [playerLoaded, setPlayerLoaded] = useState(false)
   const [err, setErr] = useState(null)
-  const [api, setApi] = useState();
+  const [api, setApi] = useState()
+  const [wrap, setWrap] = useState(true)
 
   const [user, setUser] = useState(null)
   let { userId, productId } = useParams()
@@ -25,10 +26,7 @@ export default function Landing(props) {
   const locale = useContextData()
   useEffect(() => {
     // get user
-    fetch(
-      `https://admin.demo.threekit.com/all`,
-      requestOptions
-    )
+    fetch(`https://admin.demo.threekit.com/all`, requestOptions)
       .then(response => response.json())
       .then(result => {
         result.forEach(e => {
@@ -36,7 +34,6 @@ export default function Landing(props) {
             setUser(e.name)
           }
         })
-
       })
       .catch(error => console.log('error', error))
     // end get user
@@ -65,7 +62,7 @@ export default function Landing(props) {
         assetId: product.id,
         showConfigurator: false,
         showAR: true,
-        locale: "FR"
+        locale: 'FR'
       }
       // if (locale) {
       //   config.locale = locale
@@ -116,9 +113,7 @@ export default function Landing(props) {
         >
           {user}
         </Link>
-        <Typography color='textPrimary'>
-          {product.name}
-        </Typography>
+        <Typography color='textPrimary'>{product.name}</Typography>
       </Breadcrumbs>
       {!err ? (
         <div
@@ -146,6 +141,26 @@ export default function Landing(props) {
           playerLoaded={playerLoaded}
         />
       )}
+      {playerLoaded ? (
+        <div
+          style={{
+            textAlign: 'center',
+            color: '#0f2526',
+            width: '70vw',
+            margin: 'auto',
+          }}
+        >
+          <Paper elevation={2} style={{padding: '15px'}}>
+          <Typography
+            noWrap={wrap}
+            onClick={() => (wrap ? setWrap(false) : setWrap(true))}
+            className='product-description'
+          >
+            {product.description}
+          </Typography>
+          </Paper>
+        </div>
+      ) : null}
     </>
   )
 }

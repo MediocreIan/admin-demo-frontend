@@ -32,6 +32,11 @@ svg:hover,
   color: #0f2526;
 }
 
+.product-description:hover {
+  color: #0f2526 !important;
+  cursor: pointer;
+}
+
 :not(:root):fullscreen::backdrop {
   background: white !important;
 }
