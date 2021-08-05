@@ -194,10 +194,8 @@ export default function Landing(props) {
             attribute.name = translations[translationKey]
           }
         })
-        console.log(attribute.label)
         return attribute
       })
-      console.log(JSON.stringify(newAttributes) === JSON.stringify(attributes), attributes, newAttributes)
       if (JSON.stringify(newAttributes) !== JSON.stringify(attributes)) {
         setAttributes(newAttributes)
 
@@ -334,8 +332,6 @@ export default function Landing(props) {
                                   value={f.assetId}
                                   onClick={() => {
                                     handlePartRef(event.name, f.assetId)
-                                    console.log('#####', f.assetId)
-                                    console.log('!!!!!!!!!', partRefSelect)
                                     setPartRefSelect(f.label)
                                   }}
                                 >

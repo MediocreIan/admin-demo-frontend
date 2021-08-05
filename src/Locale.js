@@ -7,41 +7,29 @@ export default function Locale(props) {
     const data = useContextData()
     const setData = useUpdateContext()
 
-    useEffect(() => {
-        setLanguages(getLanguages())
+    useEffect(async () => {
+        console.log("locale")
+        let languages = await getLanguages()
+        setLanguages(languages)
         props.translate()
     }, [props]);
 
-    function getLanguages() {
-        // var myHeaders = new Headers();
-        // myHeaders.append("authorization", "Bearer {access-token}");
+    async function getLanguages() {
+        var myHeaders = new Headers();
+        myHeaders.append("authorization", "Bearer {access-token}");
 
-        // var requestOptions = {
-        //     method: 'GET',
-        //     headers: myHeaders,
-        //     redirect: 'follow'
-        // };
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
 
-        // return fetch("https://admin.demo.threekit.com/org/" + props.userId, requestOptions)
-        //     .then(response => response.json())
-        //     .then(result => result.language.values)
-        //     .catch(error => console.log('error', error));
-        let dummy = {
-            language: {
-                values: [
-                    {
-                        label: "chinois simplifie",
-                        value: "EN"
-                    },
-                    {
-                        label: "Francais",
-                        value: "FR"
-                    }
-                ],
-                defaultValue: "ZH"
-            },
-        }
-        return dummy.language.values
+        let translations = await fetch("https://admin.demo.threekit.com/translations/60ff1c3470e42ab5a64d0e12", requestOptions)
+            .then(response => response.json())
+            .catch(error => console.log('error', error));
+
+        console.log(translations.values)
+        return translations.values
     }
 
 
