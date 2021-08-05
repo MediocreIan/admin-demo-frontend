@@ -1,4 +1,6 @@
 import { Translate } from '@material-ui/icons';
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
 import React, { useState, useEffect } from 'react';
 import { useContextData, useUpdateContext } from './contextProvider';
 
@@ -37,15 +39,36 @@ export default function Locale(props) {
 
 
     return (
-        <>
-            {languages.length > 1 ? languages.map((language) => {
-                return (
-                    <p onClick={(e) => {
-                        window.player.setLocale(language.value)
-                        props.translate()
-                    }}>{language.label}</p>
-                )
-            }) : null}
-        </>
+        <div
+            style={{
+                position: 'absolute',
+                bottom: '5px',
+                left: "5px"
+            }}
+        >
+            <p
+                style={{
+                    fontSize: '10px'
+                }}
+            >language</p>
+            <Select
+                onChange={(e) => {
+                    window.player.setLocale(e.target.value)
+                    props.translate()
+                }
+                }
+            // value={languages[0]}
+            >
+                {
+                    languages.length > 1 ? languages.map((language) => {
+                        return (
+                            <MenuItem
+                                value={language.value}
+                            >{language.label}</MenuItem>
+                        )
+                    }) : null
+                }
+            </Select >
+        </div>
     )
 }
