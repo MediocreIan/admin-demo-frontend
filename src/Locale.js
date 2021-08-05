@@ -24,7 +24,7 @@ export default function Locale(props) {
             redirect: 'follow'
         };
 
-        let translations = await fetch("https://admin.demo.threekit.com/translations/60ff1c3470e42ab5a64d0e12", requestOptions)
+        let translations = await fetch("https://admin.demo.threekit.com/translations/" + props.userId, requestOptions)
             .then(response => response.json())
             .catch(error => console.log('error', error));
 
