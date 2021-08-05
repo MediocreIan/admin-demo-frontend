@@ -429,7 +429,6 @@ export default function Landing(props) {
           loaded={props.playerLoaded}
           styles={{
             margin: 'auto',
-            width: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
