@@ -61,7 +61,6 @@ export default function Price(props) {
         .catch(error => console.log('error', error))
     } else {
       if (window.configurator && pricebook.length > 0) {
-        console.log("active currency", activeCurrency)
         let currentPrice = window.configurator.getPrice(
           pricebook[0].id,
           activeCurrency
