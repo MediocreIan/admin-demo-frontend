@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 345,
     minWidth: 345,
     margin: '0 auto 10px',
-height: 395
+    height: 395
   },
   details: {
     display: 'flex',
@@ -81,13 +81,6 @@ export default function MediaControlCard(props) {
           </Typography>
           <Typography variant='body2' color='textSecondary' component='p' noWrap={true}>
             {props.product.description}
-            <Price userId={props.userId} styles={{
-              margin: "auto",
-              width: "50%",
-              display: 'flex',
-              alignItems: "center",
-              justifyContent: "center",
-            }}></Price>
           </Typography>
         </CardContent>
       </CardActionArea>
