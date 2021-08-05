@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import { MenuItem, Select } from '@material-ui/core'
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 export default function Price(props) {
   const [price, setPrice] = useState(0)
@@ -8,6 +11,8 @@ export default function Price(props) {
   const [activeCurrency, setCurrency] = useState(0)
   const [attributes, setAttributes] = useState(props.attributes)
   const [pricebook, setPricebook] = useState(null)
+  const [selectVal, setSelectVal] = useState();
+
 
   useEffect(() => {
     getPrice()
@@ -76,14 +81,14 @@ export default function Price(props) {
   }, [activeCurrency]);
 
   return (
-    <div key={props.key}>
+    <div key={props.key} style={props.styles}>
       {price > 0 ? (
-        <Box style={props.styles}>
+        <Box>
           <Paper
-            elevation={6}
+            elevation={1}
             style={{
               borderRadius: '10px',
-              border: '1px solid #79AC85'
+              margin: '5px'
             }}
           >
             <h2
@@ -92,18 +97,33 @@ export default function Price(props) {
                 color: '#0F2526'
               }}
             >
-              Price: ${price}
+              Price: {getSymbolFromCurrency(activeCurrency) ? getSymbolFromCurrency(activeCurrency) : 'errorororor'}{price}
             </h2>
           </Paper>
         </Box>
-      ) : null}{' '}
-      {currencies ? currencies.map(currency => {
+      ) : null}
+      {currencies ? <Select
+        labelId="demo-simple-select-label"
+        id="currency-select"
+        value={selectVal}
+        style={{
+          margin: '5px'
+        }}
+        onChange={(e) => {
+          setCurrency(e.target.value)
+          setSelectVal(e.target.value)
+        }}
+      >{currencies.map(currency => {
         return (
-          <p onClick={(e) => {
-            setCurrency(e.target.innerHTML)
-          }}>{currency}</p>
+          <MenuItem
+            value={currency}
+            className='currency'
+          >{currency}</MenuItem>
         )
-      }) : null}
+      })}
+      </Select>
+
+        : null}
     </div>
   )
 }
