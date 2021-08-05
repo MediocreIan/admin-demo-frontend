@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Landing(props) {
+export default function Landing (props) {
   // Style
   const classes = useStyles()
   const matches = useMediaQuery('(min-width:600px)')
@@ -63,7 +63,7 @@ export default function Landing(props) {
     window.configurator.getDisplayAttributes()
   )
   const [length, setLength] = useState(attributes.length)
-  const [key, setKey] = useState();
+  const [key, setKey] = useState()
 
   // Configs
   const [selectSelect, setSelectSelect] = useState('')
@@ -77,7 +77,7 @@ export default function Landing(props) {
   const [showForm, setShowForm] = useState(true)
   // const [playerHeight, setPlayerHeight] =useState()
 
-  function checkNested(attr, active) {
+  function checkNested (attr, active) {
     window.pl = window.player.enableApi('player')
     window.config = window.pl.configurator
     if (!window.config) {
@@ -110,10 +110,19 @@ export default function Landing(props) {
     //   }
     //   console.log(nestedAttr)
     // })
-  }, [attributes, current, currentAttr, currentAttrIndex, isNested, nestedAttr, props, key])
+  }, [
+    attributes,
+    current,
+    currentAttr,
+    currentAttrIndex,
+    isNested,
+    nestedAttr,
+    props,
+    key
+  ])
 
   // Check to make sure we can't go too far in the steps
-  function setStep(dir, attr) {
+  function setStep (dir, attr) {
     setSelectSelect()
     setNum()
 
@@ -134,12 +143,12 @@ export default function Landing(props) {
     }
   }
 
-  function handleSelect(attr, e) {
+  function handleSelect (attr, e) {
     // setSelectSelect(e.target.value)
     window.configurator.setConfiguration({ [attr]: e.target.value })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleColor(event, e) {
+  function handleColor (event, e) {
     setColor(e)
     let color = e.rgb
     window.configurator.setConfiguration({
@@ -147,17 +156,17 @@ export default function Landing(props) {
     })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleUpload(e) {
+  function handleUpload (e) {
     setFile(e)
     window.configurator.setConfiguration(e)
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleString(attr, val) {
+  function handleString (attr, val) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: val })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handlePartRef(attr, val, event) {
+  function handlePartRef (attr, val, event) {
     // This will be set config obj
 
     window.configurator
@@ -168,48 +177,47 @@ export default function Landing(props) {
         // console.log(val)
       })
   }
-  function handleSlide(attr, e, newValue) {
+  function handleSlide (attr, e, newValue) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: newValue })
     setNum(newValue)
     setAttributes(window.configurator.getDisplayAttributes())
   }
 
-  function handleTextInput(attr, value) {
+  function handleTextInput (attr, value) {
     setText(value)
     window.configurator.setConfiguration({ [attr]: value })
     setAttributes(window.configurator.getDisplayAttributes())
   }
 
-  function toggleShowForm() {
+  function toggleShowForm () {
     setShowForm(!showForm)
   }
 
-  function translate() {
+  function translate () {
     let translations = window.player.getTranslations()
     if (translations && window.configurator.getDisplayAttributes()) {
-      let newAttributes = window.configurator.getDisplayAttributes().map((attribute) => {
-        Object.keys(translations).forEach((translationKey) => {
-          if (attribute.name === translationKey) {
-            attribute.name = translations[translationKey]
-          }
+      let newAttributes = window.configurator
+        .getDisplayAttributes()
+        .map(attribute => {
+          Object.keys(translations).forEach(translationKey => {
+            if (attribute.name === translationKey) {
+              attribute.name = translations[translationKey]
+            }
+          })
+          return attribute
         })
-        return attribute
-      })
       if (JSON.stringify(newAttributes) !== JSON.stringify(attributes)) {
         setAttributes(newAttributes)
-
       }
     }
   }
-
 
   return (
     <div>
       {attributes.length === 1 ? (
         <center>
           <h4>{attributes[currentAttrIndex].name}</h4>
-
         </center>
       ) : (
         <div style={{ margin: '10px' }}>
@@ -300,7 +308,7 @@ export default function Landing(props) {
                       <FormControl className={classes.formControl}>
                         <InputLabel id={event.id}>{event.name}</InputLabel>
                         <div>
-                          <p >{partRefSelect}</p>
+                          <p>{partRefSelect}</p>
                           {event.values.map(g => {
                             return checkNested(
                               attributes[currentAttrIndex],
@@ -438,7 +446,12 @@ export default function Landing(props) {
           }}
         />
       ) : null}
-      <Locale attributes={attributes} setAttributes={setAttributes} userId={props.userId} translate={translate} />
+      <Locale
+        attributes={attributes}
+        setAttributes={setAttributes}
+        userId={props.userId}
+        translate={translate}
+      />
     </div>
   )
 }
