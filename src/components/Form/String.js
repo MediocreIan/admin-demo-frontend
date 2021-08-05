@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 export default function StringComponent(props) {
     const classes = useStyles()
 
-    if (props.e.values.length > 10) {
+    if (props.e.values.length > 0) {
         return (
             <div>
                 <FormControl className={classes.formControl}>

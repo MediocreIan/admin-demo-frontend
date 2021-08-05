@@ -17,7 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 
 // import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
+import Select from '@material-ui/core/NativeSelect'
 
 // Type = Number for numerical input
 import TextField from '@material-ui/core/TextField'
