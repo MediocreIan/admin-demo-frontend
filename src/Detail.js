@@ -141,7 +141,7 @@ export default function Landing (props) {
           playerLoaded={playerLoaded}
         />
       )}
-      {playerLoaded ? (
+      {product.description && playerLoaded? (
         <div
           style={{
             textAlign: 'center',
