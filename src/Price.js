@@ -11,7 +11,7 @@ export default function Price(props) {
   const [activeCurrency, setCurrency] = useState(0)
   const [attributes, setAttributes] = useState(props.attributes)
   const [pricebook, setPricebook] = useState(null)
-  const [selectVal, setSelectVal] = useState();
+  const [selectVal, setSelectVal] = useState(currencies[0]);
 
 
   useEffect(() => {
@@ -81,15 +81,12 @@ export default function Price(props) {
   }, [activeCurrency]);
 
   return (
-    <div key={props.key} style={props.styles}>
+    <div key={props.key}>
       {price > 0 ? (
         <Box>
           <Paper
             elevation={1}
-            style={{
-              borderRadius: '10px',
-              margin: '5px'
-            }}
+            style={props.styles}
           >
             <h2
               style={{
@@ -106,8 +103,11 @@ export default function Price(props) {
         labelId="demo-simple-select-label"
         id="currency-select"
         value={selectVal}
+        key={currencies}
         style={{
-          margin: '5px'
+          position: 'absolute',
+          bottom: '5px',
+          right: "5px"
         }}
         onChange={(e) => {
           setCurrency(e.target.value)
