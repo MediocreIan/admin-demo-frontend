@@ -194,9 +194,7 @@ export default function Landing(props) {
     setShowForm(!showForm)
   }
 
-  function translate() {
-    let translations = window.player.getTranslations()
-    console.log(window.player.getTranslations())
+  function translate(translations) {
     if (translations && window.configurator.getDisplayAttributes()) {
       let newAttributes = window.configurator
         .getDisplayAttributes()
