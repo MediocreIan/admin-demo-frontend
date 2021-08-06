@@ -8,13 +8,15 @@ export default function Locale(props) {
     const [languages, setLanguages] = useState([]);
     const data = useContextData()
     const setData = useUpdateContext()
+    const [key, setKey] = useState(0)
 
     useEffect(async () => {
+        console.log('reload')
         let languages = await getLanguages()
         setLanguages(languages)
-        props.translate()
+        props.translate(window.player.getTranslations())
 
-    }, [props]);
+    }, [props, key]);
 
     async function getLanguages() {
         var myHeaders = new Headers();
@@ -31,6 +33,13 @@ export default function Locale(props) {
             .catch(error => console.log('error', error));
 
         return translations.values
+    }
+    let handleChange = async (e) => {
+        console.log("before", window.player.getTranslations())
+        await window.player.setLocale(e.target.value)
+        console.log("after", window.player.getTranslations())
+        props.translate(window.player.getTranslations(e))
+        setKey(key + 1)
     }
 
 
@@ -51,10 +60,8 @@ export default function Locale(props) {
                 }}
             >language</p>
             <Select
-                onChange={async (e) => {
-                    window.player.setLocale(e.target.value)
-                    window.player.getTranslations()
-                    props.translate()
+                onChange={(e) => {
+                    handleChange(e)
                 }
                 }
             // value={languages[0]}
