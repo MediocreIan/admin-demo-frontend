@@ -128,7 +128,10 @@ export default function Landing(props) {
             spacing={2}
           >
             <Grid item>
-              <Typography variant={'h4'} style={{ textAlign: 'center' }}>
+              <Typography variant={'h4'} style={{
+                textAlign: 'center',
+                fontWeight: 300
+              }}>
                 {product.name}
               </Typography>
             </Grid>

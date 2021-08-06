@@ -220,7 +220,14 @@ export default function Landing(props) {
         </center>
       ) : (
         <div style={{ margin: '10px' }}>
-          <center>
+          <Grid
+            container
+            justifyItems="center"
+            alignItems="center"
+            justify="center"
+            align="center"
+          >
+
             <ArrowBackIcon
               onClick={() => setStep('back')}
               style={{ display: 'inline' }}
@@ -235,7 +242,7 @@ export default function Landing(props) {
               onClick={() => setStep('forward')}
               style={{ display: 'inline' }}
             />
-          </center>
+          </Grid>
           {/* <ArrowBackIcon onClick={() => setStep('back')} style={{float: 'left'}} />
           <h4 style={{float: 'left'}}>{attributes[currentAttrIndex].name}</h4>
 
@@ -407,18 +414,7 @@ export default function Landing(props) {
                             minHeight: '100%',
                             color: '#044849'
                           }}
-                        >
-                          <Paper
-                            elevation={1}
-                            style={{
-                              textAlign: 'center',
-                              width: '100%',
-                              minHeight: '100%',
-                              color: '#044849'
-                            }}
-                          >
-                            {f.label}
-                          </Paper>
+                        >{f.label}
                         </Button>
                       </Grid>
                     )
