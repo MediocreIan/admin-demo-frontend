@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import { MenuItem, Select } from '@material-ui/core'
+import { MenuItem, Select, Typography } from '@material-ui/core'
 import getSymbolFromCurrency from 'currency-symbol-map'
+import Portal from './Portal'
 
 export default function Price(props) {
   const [price, setPrice] = useState(0)
@@ -82,23 +83,23 @@ export default function Price(props) {
 
   return (
     <div key={props.key}>
-      {price > 0 ? (
-        <Box>
-          <Paper
-            elevation={1}
-            style={props.styles}
-          >
-            <h2
+      <Portal>
+        {price > 0 ? (
+          <Box>
+            <Typography
+              variant={'h5'}
               style={{
-                margin: '2px',
-                color: '#0F2526'
+                textAlign: 'center',
+                fontWeight: 600
+
               }}
+
             >
               Price: {getSymbolFromCurrency(activeCurrency) ? getSymbolFromCurrency(activeCurrency) : 'errorororor'}{price}
-            </h2>
-          </Paper>
-        </Box>
-      ) : null}
+            </Typography>
+          </Box>
+        ) : null}
+      </Portal>
       {currencies ? <Select
         labelId="demo-simple-select-label"
         id="currency-select"
