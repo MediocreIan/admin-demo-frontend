@@ -5,13 +5,15 @@ import { useParams } from 'react-router-dom'
 import Price from './Price'
 import { useContextData, useUpdateContext } from './contextProvider'
 import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { useHistory } from 'react-router-dom'
 
-export default function Landing (props) {
+
+export default function Landing(props) {
   const [product, setProduct] = useState({})
   const [attributes, setAttributes] = useState(null)
   const [playerLoaded, setPlayerLoaded] = useState(false)
@@ -117,10 +119,24 @@ export default function Landing (props) {
       </Breadcrumbs>
       {!err ? (
         <div>
-          <Typography variant={'h4'} style={{textAlign: 'center'}}>
-            {product.name}
-          </Typography>
-         
+          <Grid
+            container
+            alignItems="center"
+            justify="center"
+            justifyItems="center"
+            align="center"
+            spacing={2}
+          >
+            <Grid item>
+              <Typography variant={'h4'} style={{ textAlign: 'center' }}>
+                {product.name}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <div id="portal"></div>
+            </Grid>
+          </Grid>
+
           {product.description && playerLoaded ? (
             <div
               style={{
