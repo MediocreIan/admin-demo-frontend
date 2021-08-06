@@ -126,16 +126,21 @@ export default function Landing(props) {
     setSelectSelect()
     setNum()
 
+    console.log(length)
+    console.log(current)
     if (dir == 'forward') {
       if (current == length) {
-        return
+        setCurrent(current => 1)
+        setCurrentAttrIndex(0)
+
       } else {
         setCurrent(current => current + 1)
         setCurrentAttrIndex(currentAttrIndex => currentAttrIndex + 1)
       }
     } else {
       if (current == 1) {
-        return
+        setCurrent(length)
+        setCurrentAttrIndex(length - 1)
       } else {
         setCurrent(current => current - 1)
         setCurrentAttrIndex(currentAttrIndex => currentAttrIndex - 1)
@@ -232,7 +237,9 @@ export default function Landing(props) {
               onClick={() => setStep('back')}
               style={{ display: 'inline' }}
             />
-            <Button onClick={() => toggleShowForm()}>
+            <Button onClick={() => toggleShowForm()} style={{
+              width: "220px"
+            }}>
               <h3 style={{ display: 'inline' }}>
                 {attributes[currentAttrIndex].name}
               </h3>
