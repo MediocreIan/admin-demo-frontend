@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button'
 import { MenuItem, Select, Typography } from '@material-ui/core'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import Portal from './Portal'
+import CurrencyPortal from './CurrencyPortal'
 
 export default function Price(props) {
   const [price, setPrice] = useState(0)
@@ -100,30 +101,32 @@ export default function Price(props) {
           </Box>
         ) : null}
       </Portal>
-      {currencies ? <Select
-        labelId="demo-simple-select-label"
-        id="currency-select"
-        value={selectVal}
-        key={currencies}
-        style={{
-          position: 'absolute',
-          bottom: '5px',
-          right: "5px"
-        }}
-        onChange={(e) => {
-          setCurrency(e.target.value)
-          setSelectVal(e.target.value)
-        }}
-      >{currencies.map(currency => {
-        return (
-          <MenuItem
-            value={currency}
-            className='currency'
-          >{currency}</MenuItem>
-        )
-      })}
-      </Select>
-
+      {currencies ?
+        <CurrencyPortal>
+          <Select
+            labelId="demo-simple-select-label"
+            id="currency-select"
+            value={selectVal}
+            key={currencies}
+            style={{
+              position: 'absolute',
+              bottom: '3px',
+              right: "3px"
+            }}
+            onChange={(e) => {
+              setCurrency(e.target.value)
+              setSelectVal(e.target.value)
+            }}
+          >{currencies.map(currency => {
+            return (
+              <MenuItem
+                value={currency}
+                className='currency'
+              >{currency}</MenuItem>
+            )
+          })}
+          </Select>
+        </CurrencyPortal>
         : null}
     </div>
   )

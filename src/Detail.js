@@ -187,6 +187,8 @@ export default function Landing(props) {
           playerLoaded={playerLoaded}
         />
       )}
+      <div id="localePortal" />
+      <div id="currencyPortal" />
     </>
   )
 }

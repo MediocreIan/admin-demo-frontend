@@ -3,6 +3,7 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import React, { useState, useEffect } from 'react';
 import { useContextData, useUpdateContext } from './contextProvider';
+import LocalePortal from './localePortal';
 
 export default function Locale(props) {
     const [languages, setLanguages] = useState([]);
@@ -46,36 +47,39 @@ export default function Locale(props) {
 
 
 
-    return (props.playerLoaded ? (
-        <div
-            style={{
-                position: 'absolute',
-                bottom: '5px',
-                left: "5px"
-            }}
-        >
-            <p
+    return (props.playerLoaded && languages.length > 0 ? (
+        <LocalePortal>
+            <div
                 style={{
-                    fontSize: '10px'
+                    position: 'absolute',
+                    bottom: '3px',
+                    left: "3px"
                 }}
-            >language</p>
-            <Select
-                onChange={(e) => {
-                    handleChange(e)
-                }
-                }
-            // value={languages[0]}
             >
-                {
-                    languages.length > 1 ? languages.map((language) => {
-                        return (
-                            <MenuItem
-                                value={language.value}
-                            >{language.label}</MenuItem>
-                        )
-                    }) : null
-                }
-            </Select >
-        </div>) : null
+                <p
+                    style={{
+                        fontSize: '10px'
+                    }}
+                >language</p>
+                <Select
+                    onChange={(e) => {
+                        handleChange(e)
+                    }
+                    }
+                // value={languages[0]}
+                >
+                    {
+                        languages.length > 1 ? languages.map((language) => {
+                            return (
+                                <MenuItem
+                                    value={language.value}
+                                >{language.label}</MenuItem>
+                            )
+                        }) : null
+                    }
+                </Select >
+            </div>
+        </LocalePortal>
+    ) : null
     )
 }

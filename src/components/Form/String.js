@@ -34,7 +34,9 @@ export default function StringComponent(props) {
             <div>
                 <FormControl className={classes.formControl}>
                     <InputLabel id={props.e.id}>{props.e.name}</InputLabel>
-                    <Select id={props.e.id} value={props.selectSelect}>
+                    <Select id={props.e.id} value={props.selectSelect}
+
+                    >
                         {props.e.values.map(f => {
                             return (
                                 <MenuItem
