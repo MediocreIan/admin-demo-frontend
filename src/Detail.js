@@ -164,7 +164,7 @@ export default function Landing(props) {
           <div
             id='player'
             style={{
-              height: '50vh',
+              height: '45vh',
               margin: '5px auto 5px',
               width: '80vw'
             }}
