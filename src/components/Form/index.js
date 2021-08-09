@@ -23,7 +23,8 @@ import deepCompare from '../../middleWare/deepCompare'
 
 // import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/NativeSelect'
+import Select from '@material-ui/core/Select'
+import { NativeSelect } from '@material-ui/core'
 
 // Type = Number for numerical input
 import TextField from '@material-ui/core/TextField'
@@ -314,7 +315,7 @@ export default function Landing(props) {
                     // need to build this
                     <p>Image upload is not yet supported on this app. </p>
                   )
-                } else if (event.values.length > 10) {
+                } else if (event.values.length > 0) {
                   return (
                     <div>
                       {/* <p>Part-Ref Long {event.name}</p> */}
@@ -348,17 +349,17 @@ export default function Landing(props) {
                         >
                           {event.values.map(f => {
                             return (
-                              <div>
-                                <MenuItem
-                                  value={f.assetId}
-                                  onClick={() => {
-                                    handlePartRef(event.name, f.assetId)
-                                    setPartRefSelect(f.label)
-                                  }}
-                                >
-                                  {f.label}
-                                </MenuItem>
-                              </div>
+
+                              <MenuItem
+                                value={f.assetId}
+                                onClick={() => {
+                                  handlePartRef(event.name, f.assetId)
+                                  setPartRefSelect(f.label)
+                                }}
+                              >
+                                {f.label}
+                              </MenuItem>
+
                             )
                           })}
                         </Select>
