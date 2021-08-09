@@ -1,7 +1,6 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
-import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
 import { MenuItem, Select, Typography } from '@material-ui/core'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import Portal from './Portal'
@@ -11,7 +10,6 @@ export default function Price(props) {
   const [price, setPrice] = useState(0)
   const [currencies, setCurrencies] = useState(0)
   const [activeCurrency, setCurrency] = useState(0)
-  const [attributes, setAttributes] = useState(props.attributes)
   const [pricebook, setPricebook] = useState(null)
   const [selectVal, setSelectVal] = useState(currencies[0]);
 
@@ -20,7 +18,7 @@ export default function Price(props) {
     getPrice()
   }, [price, props])
 
-  function getPrice(currency) {
+  function getPrice() {
 
     // setAttributes(props.attributes)
     let userId = props.userId
@@ -120,6 +118,7 @@ export default function Price(props) {
           >{currencies.map(currency => {
             return (
               <MenuItem
+                key={currency}
                 value={currency}
                 className='currency'
               >{currency}</MenuItem>

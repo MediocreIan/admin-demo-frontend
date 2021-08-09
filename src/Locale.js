@@ -1,14 +1,11 @@
-import { Translate } from '@material-ui/icons';
+/* eslint-disable react/prop-types */
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import React, { useState, useEffect } from 'react';
-import { useContextData, useUpdateContext } from './contextProvider';
 import LocalePortal from './localePortal';
 
 export default function Locale(props) {
     const [languages, setLanguages] = useState([]);
-    const data = useContextData()
-    const setData = useUpdateContext()
     const [key, setKey] = useState(0)
 
     useEffect(async () => {
@@ -72,6 +69,7 @@ export default function Locale(props) {
                         languages.length > 1 ? languages.map((language) => {
                             return (
                                 <MenuItem
+                                    key={language.value}
                                     value={language.value}
                                 >{language.label}</MenuItem>
                             )

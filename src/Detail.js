@@ -1,10 +1,7 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import Form from './components/Form'
-import data from './components/Form/data'
 import { useParams } from 'react-router-dom'
-import Price from './Price'
-import { useContextData, useUpdateContext } from './contextProvider'
-import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
@@ -18,14 +15,12 @@ export default function Landing(props) {
   const [attributes, setAttributes] = useState(null)
   const [playerLoaded, setPlayerLoaded] = useState(false)
   const [err, setErr] = useState(null)
-  const [api, setApi] = useState()
   const [wrap, setWrap] = useState(true)
 
   const [user, setUser] = useState(null)
   let { userId, productId } = useParams()
   let history = useHistory()
 
-  const locale = useContextData()
   useEffect(() => {
     // get user
     fetch(`https://admin.demo.threekit.com/all`, requestOptions)
@@ -81,6 +76,7 @@ export default function Landing(props) {
             const privateConfig = window.player
               .enableApi('player')
               .getConfigurator()
+            // eslint-disable-next-line no-unused-vars
             privateConfig.on('setConfiguration', config => {
               setAttributes(window.configurator.getDisplayAttributes())
             })

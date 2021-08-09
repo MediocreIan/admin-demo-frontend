@@ -1,3 +1,5 @@
+/* eslint-disable no-unreachable */
+/* eslint-disable react/prop-types */
 /* eslint-disable default-case */
 import React, { useState, useEffect } from 'react'
 import NestedForm from './NestedForm'
@@ -13,7 +15,6 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import TuneIcon from '@material-ui/icons/Tune'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 
 // import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
@@ -24,7 +25,6 @@ import TextField from '@material-ui/core/TextField'
 import Slider from '@material-ui/core/Slider'
 import { ColorPicker } from 'material-ui-color'
 import { DropzoneArea } from 'material-ui-dropzone'
-import { RoomSharp } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -49,23 +49,21 @@ export default function Landing(props) {
 
     // Gets the current step
     const [current, setCurrent] = useState(1)
-    const [currentAttr, setCurrentAttr] = useState()
+    const [currentAttr] = useState()
     const [currentAttrIndex, setCurrentAttrIndex] = useState(0)
-    const [screen, setScreen] = useState(props.screen)
 
     // Saving the length of the array in state, probably not needed.
-    const [attributes, setAttributes] = useState(window.configurator.getDisplayAttributes())
+    const [attributes] = useState(window.configurator.getDisplayAttributes())
     const [length, setLength] = useState(props.data.length.length)
 
 
     // Configs
     const [selectSelect, setSelectSelect] = useState('')
     const [color, setColor] = useState('#000')
-    const [file, setFile] = useState()
     const [num, setNum] = useState(0)
     const [text, setText] = useState('')
-    const [isNested, setIsNested] = useState(false)
-    const [nestedAttr, setNestedAttr] = useState([])
+    const [isNested] = useState(false)
+    const [nestedAttr] = useState([])
 
     function checkNested(attr) {
         window.pl = window.player.enableApi('player')
@@ -101,7 +99,7 @@ export default function Landing(props) {
     }, [attributes, current, currentAttr, currentAttrIndex, isNested, nestedAttr])
 
     // Check to make sure we can't go too far in the steps
-    function setStep(dir, attr) {
+    function setStep(dir) {
         setSelectSelect()
         setNum()
 
@@ -122,10 +120,6 @@ export default function Landing(props) {
         }
     }
 
-    function handleSelect(attr, e) {
-        // setSelectSelect(e.target.value)
-        props.configurator.setConfiguration({ [attr]: e.target.value })
-    }
     function handleColor(event, e) {
         setColor(e)
         let color = e.rgb
@@ -134,11 +128,11 @@ export default function Landing(props) {
         })
 
     }
-    function handleUpload(e) {
-        setFile(e)
-        props.configurator.setConfiguration(e)
+    // function handleUpload(e) {
+    //     setFile(e)
+    //     props.configurator.setConfiguration(e)
 
-    }
+    // }
     function handleString(attr, val) {
         // This will be set config obj
         props.configurator.setConfiguration({ [attr]: val })
@@ -194,7 +188,7 @@ export default function Landing(props) {
                 <p>{props.data.map((e) => {
                     return e.name
                 })}</p>
-                {[props.data[current - 1]].map((event, i) => {
+                {[props.data[current - 1]].map((event) => {
                     // console.log('attr index ' + currentAttrIndex)
                     switch (event.type) {
                         case 'String':
@@ -208,6 +202,7 @@ export default function Landing(props) {
                                                     return (
                                                         <MenuItem
                                                             value={f.value}
+                                                            key={f.value}
                                                             onClick={() => handleString(event.name, f.value)}
                                                         >
                                                             {f.label}
@@ -240,6 +235,7 @@ export default function Landing(props) {
                                                             handleString(event.name, f.value, event)
                                                         }
                                                         className={classes.formBtn}
+                                                        key={f.value}
                                                     >
                                                         {f.label}
                                                     </Button>
@@ -249,6 +245,7 @@ export default function Landing(props) {
                                     </div>
                                 )
                             }
+                            // eslint-disable-next-line no-unreachable
                             break
                         case 'Number':
                             return (
@@ -291,7 +288,10 @@ export default function Landing(props) {
                             break
                         case 'Asset':
                             if (event.assetType == 'upload') {
-                                return <DropzoneArea filesLimit={1} onChange={handleUpload} />
+                                return <DropzoneArea
+                                    filesLimit={1}
+                                //   onChange={handleUpload}
+                                />
                             } else if (event.values.length > 10) {
                                 return (
                                     <div>
@@ -301,7 +301,9 @@ export default function Landing(props) {
                                             <Select id={event.id} value={selectSelect}>
                                                 {event.values.map(f => {
                                                     return (
-                                                        <div>
+                                                        <div
+                                                            key={f.assetId}
+                                                        >
                                                             {checkNested(props.data[currentAttrIndex]) ? (
                                                                 <NestedForm data={checkNested(props.data[currentAttrIndex])} />
                                                             ) : (
@@ -332,9 +334,11 @@ export default function Landing(props) {
                                             className={classes.formBtn}
 
                                         >
-                                            {event.values.map((f, i) => {
+                                            {event.values.map((f) => {
                                                 return (
-                                                    <div>
+                                                    <div
+                                                        key={f.assetId}
+                                                    >
                                                         {checkNested(props.data[currentAttrIndex]) ? (
                                                             <NestedForm data={checkNested(props.data[currentAttrIndex])} />
                                                         ) : null}

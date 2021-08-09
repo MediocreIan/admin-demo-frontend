@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import ProductListCard from './ProductListCard'
 import { useParams } from 'react-router-dom'
@@ -7,11 +8,10 @@ import Typography from '@material-ui/core/Typography'
 import { useHistory } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 
-export default function Listing (props) {
+export default function Listing(props) {
   let history = useHistory()
 
   const [products, setProducts] = useState([])
-  const [user, setUser] = useState({})
 
   let { id, name, publicToken } = useParams()
   useEffect(() => {
@@ -50,7 +50,10 @@ export default function Listing (props) {
         {products ? (
           products.map(product => {
             return (
-              <Grid item>
+              <Grid item
+                key={product.id}
+
+              >
                 <ProductListCard
                   product={product}
                   userId={id}
@@ -61,6 +64,7 @@ export default function Listing (props) {
           })
         ) : (
           <h4>
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
             No products found, you may need to add the "website" tag to your
             products
           </h4>
