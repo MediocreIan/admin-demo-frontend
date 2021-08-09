@@ -124,6 +124,7 @@ export default function Landing(props) {
 
   // Check to make sure we can't go too far in the steps
   function setStep(dir, attr) {
+    setPartRefSelect(null)
     setSelectSelect()
     setNum()
 
@@ -216,6 +217,29 @@ export default function Landing(props) {
         setAttributes(newAttributes)
       }
     }
+  }
+
+  function generatePartRefOptions(event) {
+    event.values.sort((a, b) => {
+      if (a.label < b.label) { return -1 }
+      if (a.label > b.label) { return 1 }
+      return 0
+    })
+    return event.values.map(f => {
+      return (
+
+        <MenuItem
+          value={f.assetId}
+          onClick={() => {
+            handlePartRef(event.name, f.assetId)
+            setPartRefSelect(f.label)
+          }}
+        >
+          {f.label}
+        </MenuItem>
+
+      )
+    })
   }
 
   return (
@@ -347,21 +371,7 @@ export default function Landing(props) {
                           value={partRefSelect}
                           style={{ minWidth: 250 }}
                         >
-                          {event.values.map(f => {
-                            return (
-
-                              <MenuItem
-                                value={f.assetId}
-                                onClick={() => {
-                                  handlePartRef(event.name, f.assetId)
-                                  setPartRefSelect(f.label)
-                                }}
-                              >
-                                {f.label}
-                              </MenuItem>
-
-                            )
-                          })}
+                          {generatePartRefOptions(event)}
                         </Select>
                       </FormControl>
                     </div>
