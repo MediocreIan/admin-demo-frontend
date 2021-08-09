@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
@@ -40,6 +40,7 @@ export default function StringComponent(props) {
                         {props.e.values.map(f => {
                             return (
                                 <MenuItem
+                                    key={f.value}
                                     value={f.value}
                                     onClick={() => props.handleString(props.e.name, f.value)}
                                 >
@@ -63,7 +64,9 @@ export default function StringComponent(props) {
         return (
             props.e.values.map(f => {
                 return (
-                    <Grid item xs={12} sm={6} md={4} align="center">
+                    <Grid item xs={12} sm={6} md={4} align="center"
+                        key={f.value}
+                    >
                         <Button
                             onClick={() =>
                                 props.handleString(props.e.name, f.value, props.e)

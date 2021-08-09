@@ -1,36 +1,28 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable default-case */
 import React, { useState, useEffect } from 'react'
 import NestedForm from './NestedForm'
 import './style.css'
 // UI Elements
 import { makeStyles } from '@material-ui/core/styles'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import Typography from '@material-ui/core/Typography'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
-import TuneIcon from '@material-ui/icons/Tune'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import Paper from '@material-ui/core/Paper'
+
 import StringComponent from './String'
 import NumberInput from './NumberInput'
 import Price from '../../Price'
 import Locale from '../../Locale'
-import deepCompare from '../../middleWare/deepCompare'
 
 // import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import { NativeSelect } from '@material-ui/core'
 
 // Type = Number for numerical input
-import TextField from '@material-ui/core/TextField'
-import Slider from '@material-ui/core/Slider'
 import { ColorPicker } from 'material-ui-color'
-import { DropzoneArea } from 'material-ui-dropzone'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -51,30 +43,27 @@ const useStyles = makeStyles(theme => ({
 export default function Landing(props) {
   // Style
   const classes = useStyles()
-  const matches = useMediaQuery('(min-width:600px)')
 
   // Gets the current step
   const [current, setCurrent] = useState(1)
-  const [currentAttr, setCurrentAttr] = useState()
+  const [currentAttr] = useState()
   const [currentAttrIndex, setCurrentAttrIndex] = useState(0)
-  const [screen, setScreen] = useState(props.screen)
 
   // Saving the length of the array in state, probably not needed.
   const [attributes, setAttributes] = useState(
     window.configurator.getDisplayAttributes()
   )
   const [length, setLength] = useState(attributes.length)
-  const [key, setKey] = useState()
+  const [key] = useState()
 
   // Configs
   const [selectSelect, setSelectSelect] = useState('')
   const [partRefSelect, setPartRefSelect] = useState('')
   const [color, setColor] = useState('#000')
-  const [file, setFile] = useState()
   const [num, setNum] = useState(0)
   const [text, setText] = useState('')
-  const [isNested, setIsNested] = useState(false)
-  const [nestedAttr, setNestedAttr] = useState([])
+  const [isNested] = useState(false)
+  const [nestedAttr] = useState([])
   const [showForm, setShowForm] = useState(true)
   // const [playerHeight, setPlayerHeight] =useState()
 
@@ -101,7 +90,6 @@ export default function Landing(props) {
   }
 
   useEffect(() => {
-    console.log('playerloaded', props.playerLoaded)
     // setCurrentAttr(attributes[currentAttrIndex].name)
     // enable private API for nested config
     // attributes.forEach((element, index) => {
@@ -123,7 +111,7 @@ export default function Landing(props) {
   ])
 
   // Check to make sure we can't go too far in the steps
-  function setStep(dir, attr) {
+  function setStep(dir) {
     setPartRefSelect(null)
     setSelectSelect()
     setNum()
@@ -132,7 +120,7 @@ export default function Landing(props) {
     console.log(current)
     if (dir == 'forward') {
       if (current == length) {
-        setCurrent(current => 1)
+        setCurrent(() => 1)
         setCurrentAttrIndex(0)
 
       } else {
@@ -150,11 +138,11 @@ export default function Landing(props) {
     }
   }
 
-  function handleSelect(attr, e) {
-    // setSelectSelect(e.target.value)
-    window.configurator.setConfiguration({ [attr]: e.target.value })
-    setAttributes(window.configurator.getDisplayAttributes())
-  }
+  // function handleSelect(attr, e) {
+  //   // setSelectSelect(e.target.value)
+  //   window.configurator.setConfiguration({ [attr]: e.target.value })
+  //   setAttributes(window.configurator.getDisplayAttributes())
+  // }
   function handleColor(event, e) {
     setColor(e)
     let color = e.rgb
@@ -163,17 +151,17 @@ export default function Landing(props) {
     })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handleUpload(e) {
-    setFile(e)
-    window.configurator.setConfiguration(e)
-    setAttributes(window.configurator.getDisplayAttributes())
-  }
+  // function handleUpload(e) {
+  //   setFile(e)
+  //   window.configurator.setConfiguration(e)
+  //   setAttributes(window.configurator.getDisplayAttributes())
+  // }
   function handleString(attr, val) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: val })
     setAttributes(window.configurator.getDisplayAttributes())
   }
-  function handlePartRef(attr, val, event) {
+  function handlePartRef(attr, val) {
     // This will be set config obj
 
     window.configurator
@@ -299,7 +287,7 @@ export default function Landing(props) {
             maxWidth: '1000px'
           }}
         >
-          {[attributes[current - 1]].map((event, i) => {
+          {[attributes[current - 1]].map((event) => {
             // console.log('attr index ' + currentAttrIndex)
             switch (event.type) {
               case 'String':
@@ -313,6 +301,7 @@ export default function Landing(props) {
                   />
                 )
 
+                // eslint-disable-next-line no-unreachable
                 break
               case 'Number':
                 return (
@@ -323,6 +312,7 @@ export default function Landing(props) {
                   />
                 )
 
+                // eslint-disable-next-line no-unreachable
                 break
               case 'Color':
                 return (
@@ -335,6 +325,7 @@ export default function Landing(props) {
                     />
                   </div>
                 )
+                // eslint-disable-next-line no-unreachable
                 break
               case 'Asset':
                 if (event.assetType == 'upload') {
@@ -386,13 +377,14 @@ export default function Landing(props) {
                     </div>
                   )
                 } else if (event.values.length < 10) {
-                  return event.values.map((f, i) => {
+                  return event.values.map((f) => {
                     return (
                       <Grid
                         item
                         xs={12}
                         sm={6}
                         md={4}
+                        key={f.assetId}
                         align='center'
                         style={
                           {

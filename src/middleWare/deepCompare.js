@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 export default function deepCompare() {
     var i, l, leftChain, rightChain;
 

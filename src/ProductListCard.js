@@ -1,17 +1,13 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardActionArea from '@material-ui/core/CardActionArea'
 
-import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious'
-import PlayArrowIcon from '@material-ui/icons/PlayArrow'
-import SkipNextIcon from '@material-ui/icons/SkipNext'
 import { useHistory } from 'react-router-dom'
-import Price from './Price'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,7 +54,6 @@ export default function MediaControlCard(props) {
     }
   }, [thumb])
   const classes = useStyles()
-  const theme = useTheme()
   let history = useHistory()
 
   return (
