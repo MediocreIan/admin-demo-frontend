@@ -229,17 +229,20 @@ export default function Landing(props) {
       return (
 
         <MenuItem
-          value={f.assetId}
-          onClick={() => {
-            handlePartRef(event.name, f.assetId)
-            setPartRefSelect(f.label)
-          }}
+          value={{ id: f.assetId, label: f.label }}
+          primaryText={f.label}
+          key={f.id}
         >
           {f.label}
         </MenuItem>
 
       )
     })
+  }
+
+  function renderValue(value) {
+    console.log(value)
+    return value;
   }
 
   return (
@@ -345,8 +348,8 @@ export default function Landing(props) {
                       {/* <p>Part-Ref Long {event.name}</p> */}
                       <FormControl className={classes.formControl}>
                         <InputLabel id={event.id}>{event.name}</InputLabel>
+                        <br />
                         <div>
-                          <p>{partRefSelect}</p>
                           {event.values.map(g => {
                             return checkNested(
                               attributes[currentAttrIndex],
@@ -370,6 +373,12 @@ export default function Landing(props) {
                           id={event.id}
                           value={partRefSelect}
                           style={{ minWidth: 250 }}
+                          renderValue={() => renderValue(partRefSelect)}
+                          onChange={(e) => {
+                            console.log(e.target.value)
+                            handlePartRef(event.name, e.target.value.id)
+                            setPartRefSelect(e.target.value.label)
+                          }}
                         >
                           {generatePartRefOptions(event)}
                         </Select>
