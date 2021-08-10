@@ -13,6 +13,7 @@ export default function Listing(props) {
 
   const [products, setProducts] = useState([])
 
+  // eslint-disable-next-line no-unused-vars
   let { id, name, publicToken } = useParams()
   useEffect(() => {
     var requestOptions = {

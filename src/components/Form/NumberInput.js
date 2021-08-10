@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Slider from '@material-ui/core/Slider'
@@ -19,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function NumberInput (props) {
+export default function NumberInput(props) {
   const classes = useStyles()
 
   return (
