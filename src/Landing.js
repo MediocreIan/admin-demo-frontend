@@ -42,7 +42,7 @@ export default function Landing() {
         margin: 'auto',
         padding: 10,
         // width: theme.spacing(16),
-        height: theme.spacing(16),
+        // height: theme.spacing(16),
       },
     },
   }));
@@ -50,8 +50,13 @@ export default function Landing() {
 
   return (
     <>
-      <div className={`${classes.root}`}>
-        <Paper elevation={2} className="landing-paper">
+      <div className={`${classes.root}`} >
+        <Typography
+          variant="h6"
+        >Catagories</Typography>
+        <Paper elevation={2} className="landing-paper" style={{ display: 'flex' }}>
+          <div>
+          </div>
           <Grid
             container
             direction='row'
