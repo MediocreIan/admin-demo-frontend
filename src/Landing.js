@@ -53,6 +53,11 @@ export default function Landing() {
       <div className={`${classes.root}`} >
         <Typography
           variant="h6"
+          style={{
+            display: "block",
+            width: "100%",
+            textAlign: "center"
+          }}
         >Catagories</Typography>
         <Paper elevation={2} className="landing-paper" style={{ display: 'flex' }}>
           <div>
