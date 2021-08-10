@@ -58,7 +58,7 @@ export default function Landing() {
             width: "100%",
             textAlign: "center"
           }}
-        >Catagories</Typography>
+        >catagories</Typography>
         <Paper elevation={2} className="landing-paper" style={{ display: 'flex' }}>
           <div>
           </div>

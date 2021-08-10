@@ -101,6 +101,11 @@ export default function Price(props) {
       </Portal>
       {currencies ?
         <CurrencyPortal>
+          <p
+            style={{
+              fontSize: '10px'
+            }}
+          >language</p>
           <Select
             labelId="demo-simple-select-label"
             id="currency-select"
