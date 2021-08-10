@@ -82,7 +82,7 @@ export default function Landing(props) {
           <ListItemText primary={'Home'} />
         </ListItem>
         <Divider />
-        {users.map((user, index) => (
+        {users.map((user) => (
           <ListItem
             button
             key={user.name}
