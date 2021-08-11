@@ -8,6 +8,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import { useHistory } from 'react-router-dom'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 
 export default function Landing(props) {
@@ -16,10 +17,12 @@ export default function Landing(props) {
   const [playerLoaded, setPlayerLoaded] = useState(false)
   const [err, setErr] = useState(null)
   const [wrap, setWrap] = useState(true)
+  const [priceLoaded, setPriceLoaded] = useState();
 
   const [user, setUser] = useState(null)
   let { userId, productId } = useParams()
   let history = useHistory()
+
 
   useEffect(() => {
     // get user
@@ -95,6 +98,7 @@ export default function Landing(props) {
   return (
     <>
       <Breadcrumbs aria-label='breadcrumb'>
+
         <Link
           color='inherit'
           onClick={() => {
@@ -122,6 +126,7 @@ export default function Landing(props) {
             justifyItems="center"
             align="center"
             spacing={2}
+            style={{ display: priceLoaded ? null : 'none' }}
           >
             <Grid item>
               <Typography variant={'h4'} style={{
@@ -135,6 +140,12 @@ export default function Landing(props) {
               <div id="portal"></div>
             </Grid>
           </Grid>
+          <Skeleton style={{
+            margin: 'auto',
+            height: '15vh',
+            width: '50vw',
+            display: priceLoaded ? 'none' : null
+          }}></Skeleton>
 
           {product.description && playerLoaded ? (
             <div
@@ -155,16 +166,32 @@ export default function Landing(props) {
               </Typography>
               {/* </Paper> */}
             </div>
-          ) : null}
+          ) : <Skeleton style={{
+            textAlign: 'center',
+            color: '#0f2526',
+            width: '70vw',
+            margin: 'auto'
+          }}></Skeleton>}
 
           <div
             id='player'
             style={{
-              height: '45vh',
-              margin: '5px auto 5px',
-              width: '80vw'
+              height: playerLoaded ? '45vh' : '0px',
+              margin: playerLoaded ? '5px auto 5px' : '0px',
+              width: '80vw',
+              visibility: playerLoaded ? null : 'hidden',
             }}
           ></div>
+          <Skeleton
+            variant="rect"
+            style={{
+              height: '45vh',
+              margin: '5px auto 5px',
+              width: '80vw',
+              display: playerLoaded ? 'none' : null
+
+            }}
+          ></Skeleton>
         </div>
       ) : (
         <h4>
@@ -173,7 +200,19 @@ export default function Landing(props) {
         </h4>
       )}
 
-      {attributes === null || attributes.length === 0 ? null : (
+      {attributes === null || attributes.length === 0 ? <><Skeleton variant="rect" width={300} height={28}
+        style={{
+          margin: '16px auto '
+        }} />
+        <Skeleton
+          variant="rect"
+          width={150}
+          height={100}
+          style={{
+            margin: 'auto'
+          }}
+        ></Skeleton>
+      </> : (
         <Form
           data={attributes}
           setAttributes={setAttributes}
@@ -181,6 +220,7 @@ export default function Landing(props) {
           userId={userId}
           key={playerLoaded}
           playerLoaded={playerLoaded}
+          setPriceLoaded={setPriceLoaded}
         />
       )}
       <div id="localePortal" />

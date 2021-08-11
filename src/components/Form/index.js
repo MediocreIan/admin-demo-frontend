@@ -24,6 +24,7 @@ import Select from '@material-ui/core/Select'
 
 // Type = Number for numerical input
 import { ColorPicker } from 'material-ui-color'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -468,6 +469,7 @@ export default function Landing(props) {
       ) : null}
       {props.playerLoaded ? (
         <Price
+          setPriceLoaded={props.setPriceLoaded}
           userId={props.userId}
           key={attributes}
           loaded={props.playerLoaded}

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
+import Skeleton from '@material-ui/lab/Skeleton';
 import { useHistory } from 'react-router-dom'
+
 
 
 export default function Landing() {
@@ -10,8 +12,12 @@ export default function Landing() {
 
   const [users, setUsers] = useState([])
   const [orgs, setOrgs] = useState([]);
+  const [height, setHeight] = useState(0);
 
   useEffect(async () => {
+    const c = document.getElementById('container').clientHeight
+    setHeight(2 * Math.round((c / 12.8) / 2))
+    console.log(height)
     if (orgs.length < 1) {
       let users = await getUsers()
       fetch("https://admin.demo.threekit.com/orgs")
@@ -23,6 +29,7 @@ export default function Landing() {
         )
         .catch(error => console.log('error', error));
     }
+    console.log(height)
   }, [orgs])
 
   function getUsers() {
@@ -58,13 +65,15 @@ export default function Landing() {
             width: "100%",
             textAlign: "center"
           }}
-        >catagories</Typography>
-        <Paper elevation={2} className="landing-paper" style={{ display: 'flex' }}>
+        >categories</Typography>
+        <Paper elevation={2} id="container" className="landing-paper" style={{ display: 'flex', minHeight: "60vh" }}>
           <div>
           </div>
           <Grid
             container
             direction='row'
+            alignContent='flex-start'
+            justifyContent='center'
 
             style={{
               maxHeight: '70vh'
@@ -92,7 +101,24 @@ export default function Landing() {
                 >{org.name}</Typography>
                 {/* <Typography variant="caption">{org.userName}</Typography> */}
               </Grid>)
-            }) : null}
+            }) :
+              <>
+                {[...Array(height)].map((elementInArray, i) => (
+                  < Grid
+                    item
+                    align='center'
+                    justify='center'
+                    style={{
+                      width: '45%',
+                      margin: '3px'
+                    }}
+                  >
+                    <Skeleton variant="text" style={{ width: '100%' }} />
+                  </Grid>
+                )
+                )}
+              </>
+            }
           </Grid>
         </Paper>
 

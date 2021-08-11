@@ -59,7 +59,10 @@ export default function Price(props) {
               )
               if (currentPrice !== price) {
                 setPrice(currentPrice)
+                props.setPriceLoaded(true)
               }
+            } else {
+              props.setPriceLoaded(true)
             }
           }
         })
@@ -72,7 +75,10 @@ export default function Price(props) {
         )
         if (currentPrice !== price) {
           setPrice(currentPrice)
+          props.setPriceLoaded(true)
         }
+      } else {
+        props.setPriceLoaded(true)
       }
     }
   }
