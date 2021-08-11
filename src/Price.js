@@ -18,6 +18,10 @@ export default function Price(props) {
     getPrice()
   }, [price, props])
 
+  function renderValue() {
+    return activeCurrency
+  }
+
   function getPrice() {
 
     // setAttributes(props.attributes)
@@ -42,6 +46,7 @@ export default function Price(props) {
       )
         .then(response => response.json())
         .then(result => {
+          console.log(result)
           let ApiPricebook = result.pricebooks.filter(book => {
             return book.name.toLowerCase() === 'website'
           })
@@ -100,7 +105,7 @@ export default function Price(props) {
               }}
 
             >
-              Price: {getSymbolFromCurrency(activeCurrency) ? getSymbolFromCurrency(activeCurrency) : 'errorororor'}{price}
+              {getSymbolFromCurrency(activeCurrency) ? getSymbolFromCurrency(activeCurrency) : 'errorororor'}{price}
             </Typography>
           </Box>
         ) : null}
@@ -112,14 +117,14 @@ export default function Price(props) {
             bottom: '3px',
             right: "3px"
           }}>
-            <p style={{
-              fontSize: '10px'
-            }}>currency</p>
+            <Typography variant="caption">currency</Typography>
+
             <Select
               labelId="demo-simple-select-label"
               id="currency-select"
-              value={selectVal}
+              value={activeCurrency}
               key={currencies}
+              renderValue={renderValue}
               onChange={(e) => {
                 setCurrency(e.target.value)
                 setSelectVal(e.target.value)

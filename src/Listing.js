@@ -30,7 +30,7 @@ export default function Listing(props) {
 
   return (
     <>
-      <h1>Product list</h1>
+      <Typography variant="h4">Products</Typography>
       <Breadcrumbs aria-label='breadcrumb'>
         <Link
           color='inherit'

@@ -160,7 +160,7 @@ export default function Landing(props) {
               <Typography
                 noWrap={wrap}
                 onClick={() => (wrap ? setWrap(false) : setWrap(true))}
-                className='product-description'
+                variant="body1"
               >
                 {product.description}
               </Typography>
