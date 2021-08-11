@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
+import { FormControlLabel, Switch } from '@material-ui/core'
 
 import StringComponent from './String'
 import NumberInput from './NumberInput'
@@ -65,6 +66,7 @@ export default function Landing(props) {
   const [isNested] = useState(false)
   const [nestedAttr] = useState([])
   const [showForm, setShowForm] = useState(true)
+  const [checked, setChecked] = useState(false);
   // const [playerHeight, setPlayerHeight] =useState()
 
   function checkNested(attr, active) {
@@ -185,6 +187,13 @@ export default function Landing(props) {
     setAttributes(window.configurator.getDisplayAttributes())
   }
 
+  function handleToggle(event, e) {
+    setChecked(!checked)
+    console.log(e.target.value)
+    window.configurator.setConfiguration({ [event.name]: !checked })
+    setAttributes(window.configurator.getDisplayAttributes())
+  }
+
   function toggleShowForm() {
     setShowForm(!showForm)
   }
@@ -298,6 +307,19 @@ export default function Landing(props) {
                     handleTextInput={handleTextInput}
                     selectSelect={selectSelect}
                     text={text}
+                  />
+                )
+
+                // eslint-disable-next-line no-unreachable
+                break
+              case 'Boolean':
+                return (
+                  <Switch
+                    checked={checked}
+                    value={checked}
+                    onChange={(e) => handleToggle(event, e)}
+                    color="#E48B6E"
+                    name="checkedB"
                   />
                 )
 
