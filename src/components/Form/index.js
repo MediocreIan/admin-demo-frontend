@@ -262,7 +262,7 @@ export default function Landing(props) {
               onClick={() => setStep('back')}
               style={{ display: 'inline' }}
             />
-            <Button onClick={() => toggleShowForm()} style={{
+            <Button style={{
               width: "220px"
             }}>
               <h3 style={{ display: 'inline' }}>
