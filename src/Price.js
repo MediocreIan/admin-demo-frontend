@@ -101,35 +101,34 @@ export default function Price(props) {
       </Portal>
       {currencies ?
         <CurrencyPortal>
-          <p
-            style={{
+          <div style={{
+            position: 'absolute',
+            bottom: '3px',
+            right: "3px"
+          }}>
+            <p style={{
               fontSize: '10px'
-            }}
-          >language</p>
-          <Select
-            labelId="demo-simple-select-label"
-            id="currency-select"
-            value={selectVal}
-            key={currencies}
-            style={{
-              position: 'absolute',
-              bottom: '3px',
-              right: "3px"
-            }}
-            onChange={(e) => {
-              setCurrency(e.target.value)
-              setSelectVal(e.target.value)
-            }}
-          >{currencies.map(currency => {
-            return (
-              <MenuItem
-                key={currency}
-                value={currency}
-                className='currency'
-              >{currency}</MenuItem>
-            )
-          })}
-          </Select>
+            }}>currency</p>
+            <Select
+              labelId="demo-simple-select-label"
+              id="currency-select"
+              value={selectVal}
+              key={currencies}
+              onChange={(e) => {
+                setCurrency(e.target.value)
+                setSelectVal(e.target.value)
+              }}
+            >{currencies.map(currency => {
+              return (
+                <MenuItem
+                  key={currency}
+                  value={currency}
+                  className='currency'
+                >{currency}</MenuItem>
+              )
+            })}
+            </Select>
+          </div>
         </CurrencyPortal>
         : null}
     </div>
