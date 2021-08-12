@@ -73,7 +73,7 @@ export default function Landing() {
             container
             direction='row'
             alignContent='flex-start'
-            justifyContent='center'
+            justifyContent={orgs.length > 0 ? null : 'center'}
 
             style={{
               maxHeight: '70vh'
@@ -98,7 +98,7 @@ export default function Landing() {
                   style={{
                     textDecoration: "underline",
                   }}
-                >{org.name}</Typography>
+                >{org.userName}</Typography>
                 {/* <Typography variant="caption">{org.userName}</Typography> */}
               </Grid>)
             }) :
