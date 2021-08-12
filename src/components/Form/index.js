@@ -228,7 +228,7 @@ export default function Landing(props) {
 
         <MenuItem
           value={{ id: f.assetId, label: f.label }}
-          primaryText={f.label}
+          // primaryText={f.label}
           key={f.id}
         >
           {f.label}

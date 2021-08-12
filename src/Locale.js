@@ -11,11 +11,12 @@ export default function Locale(props) {
     const [activeLanguage, setactiveLanguage] = useState();
 
     useEffect(async () => {
-        console.log('reload')
-        let languages = await getLanguages()
-        setLanguages(languages)
-        props.translate(window.player.getTranslations())
-
+        if (key >= 0) {
+            let languages = await getLanguages()
+            setLanguages(languages)
+            props.translate(window.player.getTranslations())
+            setKey(key - 1)
+        }
     }, [props, key]);
 
     useEffect(() => {
