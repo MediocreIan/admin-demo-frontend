@@ -147,8 +147,9 @@ export default function Landing(props) {
             display: priceLoaded ? 'none' : null
           }}></Skeleton>
 
-          {product.description && playerLoaded ? (
-            <div
+          {playerLoaded ? (
+
+            product.description ? <div
               style={{
                 textAlign: 'center',
                 color: '#0f2526',
@@ -165,7 +166,9 @@ export default function Landing(props) {
                 {product.description}
               </Typography>
               {/* </Paper> */}
-            </div>
+            </div> : null
+
+
           ) : <Skeleton style={{
             textAlign: 'center',
             color: '#0f2526',
