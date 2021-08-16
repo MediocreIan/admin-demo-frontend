@@ -52,7 +52,7 @@ export default function StringComponent(props) {
                 </FormControl>
             </div>
         )
-    } else if (props.e.values.length == 0) {
+    } else if (props.e.values.length === 0) {
         return (
             <TextField
                 value={props.text}

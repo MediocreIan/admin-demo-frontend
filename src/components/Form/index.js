@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
-import { FormControlLabel, Switch } from '@material-ui/core'
+import { Switch } from '@material-ui/core'
 
 import StringComponent from './String'
 import NumberInput from './NumberInput'
@@ -24,7 +24,6 @@ import Select from '@material-ui/core/Select'
 
 // Type = Number for numerical input
 import { ColorPicker } from 'material-ui-color'
-import Skeleton from '@material-ui/lab/Skeleton'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -50,7 +49,7 @@ export default function Landing(props) {
   const [current, setCurrent] = useState(1)
   const [currentAttr] = useState()
   const [currentAttrIndex, setCurrentAttrIndex] = useState(0)
-
+  const [displayAttributes, setDisplayAttributes] = useState();
   // Saving the length of the array in state, probably not needed.
   const [attributes, setAttributes] = useState(
     window.configurator.getDisplayAttributes()
@@ -66,7 +65,6 @@ export default function Landing(props) {
   const [text, setText] = useState('')
   const [isNested] = useState(false)
   const [nestedAttr] = useState([])
-  const [showForm, setShowForm] = useState(true)
   const [checked, setChecked] = useState(false);
   // const [playerHeight, setPlayerHeight] =useState()
 
@@ -102,6 +100,9 @@ export default function Landing(props) {
     //   }
     //   console.log(nestedAttr)
     // })
+    if (!displayAttributes) {
+      setDisplayAttributes(window.configurator.getDisplayAttributes())
+    }
   }, [
     attributes,
     current,
@@ -119,10 +120,8 @@ export default function Landing(props) {
     setSelectSelect()
     setNum()
 
-    console.log(length)
-    console.log(current)
-    if (dir == 'forward') {
-      if (current == length) {
+    if (dir === 'forward') {
+      if (current === length) {
         setCurrent(() => 1)
         setCurrentAttrIndex(0)
 
@@ -131,7 +130,7 @@ export default function Landing(props) {
         setCurrentAttrIndex(currentAttrIndex => currentAttrIndex + 1)
       }
     } else {
-      if (current == 1) {
+      if (current === 1) {
         setCurrent(length)
         setCurrentAttrIndex(length - 1)
       } else {
@@ -188,15 +187,10 @@ export default function Landing(props) {
     setAttributes(window.configurator.getDisplayAttributes())
   }
 
-  function handleToggle(event, e) {
+  function handleToggle(event) {
     setChecked(!checked)
-    console.log(e.target.value)
     window.configurator.setConfiguration({ [event.name]: !checked })
     setAttributes(window.configurator.getDisplayAttributes())
-  }
-
-  function toggleShowForm() {
-    setShowForm(!showForm)
   }
 
   function translate(translations) {
@@ -212,7 +206,7 @@ export default function Landing(props) {
           return attribute
         })
       if (JSON.stringify(newAttributes) !== JSON.stringify(attributes)) {
-        setAttributes(newAttributes)
+        setDisplayAttributes(newAttributes)
       }
     }
   }
@@ -239,7 +233,6 @@ export default function Landing(props) {
   }
 
   function renderValue(value) {
-    console.log(value)
     return value;
   }
 
@@ -253,9 +246,8 @@ export default function Landing(props) {
         <div style={{ margin: '10px' }}>
           <Grid
             container
-            justifyItems="center"
             alignItems="center"
-            justify="center"
+            justifyContent="center"
             align="center"
           >
 
@@ -266,9 +258,10 @@ export default function Landing(props) {
             <Button style={{
               width: "220px"
             }}>
-              <h3 style={{ display: 'inline' }}>
-                {attributes[currentAttrIndex].name}
-              </h3>
+              {displayAttributes ?
+                <h3 style={{ display: 'inline' }}>
+                  {displayAttributes[currentAttrIndex].name}
+                </h3> : null}
             </Button>
 
             <ArrowForwardIcon
@@ -283,140 +276,137 @@ export default function Landing(props) {
         </div>
       )}
 
-      {showForm ? (
-        <Grid
-          container
-          spacing={0}
-          justify='space-around'
-          justifyContent='center'
-          justifyItems='center'
-          style={{
-            flexGrow: '1',
-            margin: '0 auto 0',
-            alignItems: 'stretch',
-            maxWidth: '1000px'
-          }}
-        >
-          {[attributes[current - 1]].map((event) => {
-            // console.log('attr index ' + currentAttrIndex)
-            switch (event.type) {
-              case 'String':
-                return (
-                  <StringComponent
-                    e={event}
-                    handleString={handleString}
-                    handleTextInput={handleTextInput}
-                    selectSelect={selectSelect}
-                    text={text}
-                  />
-                )
+      <Grid
+        container
+        spacing={0}
+        justifyContent='space-around'
 
-                // eslint-disable-next-line no-unreachable
-                break
-              case 'Boolean':
-                return (
-                  <Switch
-                    checked={checked}
-                    value={checked}
-                    onChange={(e) => handleToggle(event, e)}
-                    color="#E48B6E"
-                    name="checkedB"
-                  />
-                )
+        style={{
+          flexGrow: '1',
+          margin: '0 auto 0',
+          alignItems: 'stretch',
+          maxWidth: '1000px'
+        }}
+      >
+        {[attributes[current - 1]].map((event) => {
+          // console.log('attr index ' + currentAttrIndex)
+          switch (event.type) {
+            case 'String':
+              return (
+                <StringComponent
+                  e={event}
+                  handleString={handleString}
+                  handleTextInput={handleTextInput}
+                  selectSelect={selectSelect}
+                  text={text}
+                />
+              )
 
-                // eslint-disable-next-line no-unreachable
-                break
-              case 'Number':
-                return (
-                  <NumberInput
-                    event={event}
-                    handleSlide={handleSlide}
-                    num={num}
-                  />
-                )
+              // eslint-disable-next-line no-unreachable
+              break
+            case 'Boolean':
+              return (
+                <Switch
+                  checked={checked}
+                  value={checked}
+                  onChange={(e) => handleToggle(event, e)}
+                  color="#E48B6E"
+                  name="checkedB"
+                />
+              )
 
-                // eslint-disable-next-line no-unreachable
-                break
-              case 'Color':
+              // eslint-disable-next-line no-unreachable
+              break
+            case 'Number':
+              return (
+                <NumberInput
+                  event={event}
+                  handleSlide={handleSlide}
+                  num={num}
+                />
+              )
+
+              // eslint-disable-next-line no-unreachable
+              break
+            case 'Color':
+              return (
+                <div>
+                  <ColorPicker
+                    defaultValue={color}
+                    value={color}
+                    data-name={'hello'}
+                    onChange={e => handleColor(event.name, e)}
+                  />
+                </div>
+              )
+              // eslint-disable-next-line no-unreachable
+              break
+            case 'Asset':
+              if (event.assetType === 'upload') {
+                return (
+                  // need to build this
+                  <p>Image upload is not yet supported on this app. </p>
+                )
+              } else if (event.values.length > 0) {
                 return (
                   <div>
-                    <ColorPicker
-                      defaultValue={color}
-                      value={color}
-                      data-name={'hello'}
-                      onChange={e => handleColor(event.name, e)}
-                    />
+                    {/* <p>Part-Ref Long {event.name}</p> */}
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id={event.id}>{event.name}</InputLabel>
+                      <br />
+                      <div>
+                        {event.values.map(g => {
+                          return checkNested(
+                            attributes[currentAttrIndex],
+                            g.assetId
+                          ) ? (
+                            <NestedForm
+                              style={{ display: 'inline' }}
+                              data={checkNested(
+                                attributes[currentAttrIndex],
+                                g.assetId
+                              )}
+                              configurator={window.config.getNestedConfigurator(
+                                attributes[currentAttrIndex]
+                              )}
+                            />
+                          ) : null
+                        })}
+                      </div>
+
+                      <Select
+                        id={event.id}
+                        value={partRefSelect}
+                        style={{ minWidth: 250 }}
+                        renderValue={() => renderValue(partRefSelect)}
+                        onChange={(e) => {
+                          handlePartRef(event.name, e.target.value.id)
+                          setPartRefSelect(e.target.value.label)
+                        }}
+                      >
+                        {generatePartRefOptions(event)}
+                      </Select>
+                    </FormControl>
                   </div>
                 )
-                // eslint-disable-next-line no-unreachable
-                break
-              case 'Asset':
-                if (event.assetType == 'upload') {
+              } else if (event.values.length < 10) {
+                return event.values.map((f) => {
                   return (
-                    // need to build this
-                    <p>Image upload is not yet supported on this app. </p>
-                  )
-                } else if (event.values.length > 0) {
-                  return (
-                    <div>
-                      {/* <p>Part-Ref Long {event.name}</p> */}
-                      <FormControl className={classes.formControl}>
-                        <InputLabel id={event.id}>{event.name}</InputLabel>
-                        <br />
-                        <div>
-                          {event.values.map(g => {
-                            return checkNested(
-                              attributes[currentAttrIndex],
-                              g.assetId
-                            ) ? (
-                              <NestedForm
-                                style={{ display: 'inline' }}
-                                data={checkNested(
-                                  attributes[currentAttrIndex],
-                                  g.assetId
-                                )}
-                                configurator={window.config.getNestedConfigurator(
-                                  attributes[currentAttrIndex]
-                                )}
-                              />
-                            ) : null
-                          })}
-                        </div>
-
-                        <Select
-                          id={event.id}
-                          value={partRefSelect}
-                          style={{ minWidth: 250 }}
-                          renderValue={() => renderValue(partRefSelect)}
-                          onChange={(e) => {
-                            console.log(e.target.value)
-                            handlePartRef(event.name, e.target.value.id)
-                            setPartRefSelect(e.target.value.label)
-                          }}
-                        >
-                          {generatePartRefOptions(event)}
-                        </Select>
-                      </FormControl>
-                    </div>
-                  )
-                } else if (event.values.length < 10) {
-                  return event.values.map((f) => {
-                    return (
-                      <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        key={f.assetId}
-                        align='center'
-                        style={
-                          {
-                            // height: "100%"
-                          }
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      key={f.assetId}
+                      align='center'
+                      style={
+                        {
+                          // height: "100%"
                         }
-                      >
-                        {' '}
-                        {/* {checkNested(
+                      }
+                    >
+                      {' '}
+                      {/* {checkNested(
                           attributes[currentAttrIndex],
                           f.assetId
                         ) ? (
@@ -430,43 +420,43 @@ export default function Landing(props) {
                             )}
                           />
                         ) : null} */}
-                        <Button
-                          startIcon={
-                            checkNested(
-                              attributes[currentAttrIndex],
-                              f.assetId
-                            ) ? (
-                              <NestedForm
-                                data={checkNested(
-                                  attributes[currentAttrIndex],
-                                  f.assetId
-                                )}
-                                configurator={window.config.getNestedConfigurator(
-                                  attributes[currentAttrIndex]
-                                )}
-                              />
-                            ) : null
-                          }
-                          onClick={() =>
-                            handlePartRef(event.name, f.assetId, event)
-                          }
-                          className={classes.formBtn}
-                          style={{
-                            width: '70%',
-                            minHeight: '100%',
-                            color: '#044849'
-                          }}
-                        >{f.label}
-                        </Button>
-                      </Grid>
-                    )
-                  })
-                }
-                break
-            }
-          })}
-        </Grid>
-      ) : null}
+                      <Button
+                        startIcon={
+                          checkNested(
+                            attributes[currentAttrIndex],
+                            f.assetId
+                          ) ? (
+                            <NestedForm
+                              data={checkNested(
+                                attributes[currentAttrIndex],
+                                f.assetId
+                              )}
+                              configurator={window.config.getNestedConfigurator(
+                                attributes[currentAttrIndex]
+                              )}
+                            />
+                          ) : null
+                        }
+                        onClick={() =>
+                          handlePartRef(event.name, f.assetId, event)
+                        }
+                        className={classes.formBtn}
+                        style={{
+                          width: '70%',
+                          minHeight: '100%',
+                          color: '#044849'
+                        }}
+                      >{f.label}
+                      </Button>
+                    </Grid>
+                  )
+                })
+              }
+              break
+          }
+        })}
+      </Grid>
+
       {props.playerLoaded ? (
         <Price
           setPriceLoaded={props.setPriceLoaded}

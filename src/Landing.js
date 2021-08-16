@@ -10,38 +10,34 @@ import { useHistory } from 'react-router-dom'
 export default function Landing() {
   let history = useHistory()
 
-  const [users, setUsers] = useState([])
   const [orgs, setOrgs] = useState([]);
   const [height, setHeight] = useState(0);
 
   useEffect(async () => {
     const c = document.getElementById('container').clientHeight
     setHeight(2 * Math.round((c / 12.8) / 2))
-    console.log(height)
     if (orgs.length < 1) {
-      let users = await getUsers()
+      // let users = await getUsers()
       fetch("https://admin.demo.threekit.com/orgs")
         .then(response => response.json())
         .then(result => {
-          console.log(result)
           setOrgs(result)
         }
         )
         .catch(error => console.log('error', error));
     }
-    console.log(height)
   }, [orgs])
 
-  function getUsers() {
-    return fetch('https://admin.demo.threekit.com/all')
-      .then(response => response.json())
-      .then(result => {
-        return result
-      })
-      .catch(error => console.log('error', error))
-  }
+  // function getUsers() {
+  //   return fetch('https://admin.demo.threekit.com/all')
+  //     .then(response => response.json())
+  //     .then(result => {
+  //       return result
+  //     })
+  //     .catch(error => console.log('error', error))
+  // }
 
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(() => ({
     root: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -106,8 +102,9 @@ export default function Landing() {
                 {[...Array(height)].map((elementInArray, i) => (
                   < Grid
                     item
+                    key={i}
                     align='center'
-                    justify='center'
+                    justifyContent='center'
                     style={{
                       width: '45%',
                       margin: '3px'

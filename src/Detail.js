@@ -30,7 +30,7 @@ export default function Landing(props) {
       .then(response => response.json())
       .then(result => {
         result.forEach(e => {
-          if (e._id == window.location.pathname.split('/')[2]) {
+          if (e._id === window.location.pathname.split('/')[2]) {
             setUser(e.name)
           }
         })
@@ -49,7 +49,6 @@ export default function Landing(props) {
         .then(response => response.json())
         .then(result => {
           setProduct(result)
-          console.log('product', result)
         })
         .catch(error => console.log('error', error))
     }
@@ -122,8 +121,7 @@ export default function Landing(props) {
           <Grid
             container
             alignItems="center"
-            justify="center"
-            justifyItems="center"
+            justifyContent="center"
             align="center"
             spacing={2}
             style={{ display: priceLoaded ? null : 'none' }}

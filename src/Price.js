@@ -11,7 +11,6 @@ export default function Price(props) {
   const [currencies, setCurrencies] = useState(0)
   const [activeCurrency, setCurrency] = useState(0)
   const [pricebook, setPricebook] = useState(null)
-  const [selectVal, setSelectVal] = useState(currencies[0]);
 
 
   useEffect(() => {
@@ -46,7 +45,6 @@ export default function Price(props) {
       )
         .then(response => response.json())
         .then(result => {
-          console.log(result)
           let ApiPricebook = result.pricebooks.filter(book => {
             return book.name.toLowerCase() === 'website'
           })
@@ -127,7 +125,6 @@ export default function Price(props) {
               renderValue={renderValue}
               onChange={(e) => {
                 setCurrency(e.target.value)
-                setSelectVal(e.target.value)
               }}
             >{currencies.map(currency => {
               return (

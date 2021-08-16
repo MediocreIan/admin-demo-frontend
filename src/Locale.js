@@ -65,7 +65,6 @@ export default function Locale(props) {
                         handleChange(e)
                     }
                     }
-                    value={activeLanguage ?? "language"}
                 >
                     {
                         languages.length > 1 ? languages.map((language) => {

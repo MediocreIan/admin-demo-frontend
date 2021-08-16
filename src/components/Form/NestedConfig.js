@@ -103,15 +103,15 @@ export default function Landing(props) {
         setSelectSelect()
         setNum()
 
-        if (dir == 'forward') {
-            if (current == length) {
+        if (dir === 'forward') {
+            if (current === length) {
                 return
             } else {
                 setCurrent(current => current + 1)
                 setCurrentAttrIndex(currentAttrIndex => currentAttrIndex + 1)
             }
         } else {
-            if (current == 1) {
+            if (current === 1) {
                 return
             } else {
                 setCurrent(current => current - 1)
@@ -213,7 +213,7 @@ export default function Landing(props) {
                                         </FormControl>
                                     </div>
                                 )
-                            } else if (event.values.length == 0) {
+                            } else if (event.values.length === 0) {
                                 return (
                                     <TextField
                                         value={text}
@@ -287,7 +287,7 @@ export default function Landing(props) {
                             )
                             break
                         case 'Asset':
-                            if (event.assetType == 'upload') {
+                            if (event.assetType === 'upload') {
                                 return <DropzoneArea
                                     filesLimit={1}
                                 //   onChange={handleUpload}
