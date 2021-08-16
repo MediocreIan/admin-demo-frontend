@@ -25,6 +25,7 @@ export default function Landing(props) {
 
 
   useEffect(() => {
+    console.log(priceLoaded)
     // get user
     fetch(`https://admin.demo.threekit.com/all`, requestOptions)
       .then(response => response.json())

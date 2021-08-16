@@ -53,8 +53,10 @@ export default function Price(props) {
               setPricebook(ApiPricebook)
               ApiPricebook = ApiPricebook[0]
               setCurrencies(ApiPricebook.currencies)
+              console.log('api')
               if (!activeCurrency) {
                 setCurrency(ApiPricebook.currencies[0])
+                props.setPriceLoaded(true)
               }
               let currentPrice = window.configurator.getPrice(
                 ApiPricebook.id,
@@ -63,11 +65,14 @@ export default function Price(props) {
               if (currentPrice !== price) {
                 setPrice(currentPrice)
                 props.setPriceLoaded(true)
+              } else {
+                props.setPriceLoaded(true)
               }
             } else {
+              console.log('origional')
               props.setPriceLoaded(true)
             }
-          }
+          } props.setPriceLoaded(true)
         })
         .catch(error => console.log('error', error))
     } else {
@@ -84,6 +89,7 @@ export default function Price(props) {
         props.setPriceLoaded(true)
       }
     }
+    props.setPriceLoaded(true)
   }
   useEffect(() => {
     getPrice()

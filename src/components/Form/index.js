@@ -222,7 +222,7 @@ export default function Landing(props) {
   }
 
   function translate() {
-    if (window.player.getTranslations() && window.configurator.getDisplayAttributes()) {
+    if (Object.keys(window.player.getTranslations()).length > 0 && window.configurator.getDisplayAttributes()) {
       console.log(window.configurator.getDisplayAttributes())
       let newAttributes = window.configurator
         .getDisplayAttributes()
@@ -270,7 +270,7 @@ export default function Landing(props) {
     <div>
       {attributes.length === 1 ? (
         <center>
-          <h4>{translatedAttributes[currentAttrIndex].name}</h4>
+          <h4>{attributes[currentAttrIndex].name}</h4>
         </center>
       ) : (
         <div style={{ margin: '10px' }}>
@@ -288,10 +288,10 @@ export default function Landing(props) {
             />
             <Button style={{
               width: "220px"
-            }}>{translatedAttributes ?
+            }}>
               <h3 style={{ display: 'inline' }}>
-                {translatedAttributes[currentAttrIndex].name}
-              </h3> : null}
+                {translatedAttributes ? translatedAttributes[currentAttrIndex].name : attributes[currentAttrIndex].name}
+              </h3>
             </Button>
 
             <ArrowForwardIcon
@@ -383,7 +383,7 @@ export default function Landing(props) {
                     <div>
                       {/* <p>Part-Ref Long {event.name}</p> */}
                       <FormControl className={classes.formControl}>
-                        <InputLabel id={event.id}>{translatedAttributes[currentAttrIndex].name}</InputLabel>
+                        <InputLabel id={event.id}>{translatedAttributes ? translatedAttributes[currentAttrIndex].name : attributes[currentAttrIndex].name}</InputLabel>
                         <br />
                         <div>
                           {event.values.map(g => {
