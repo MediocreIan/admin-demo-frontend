@@ -152,6 +152,7 @@ export default function Landing(props) {
       [event]: { r: color[0] / 255, g: color[1] / 255, b: color[2] / 255 }
     })
     setAttributes(window.configurator.getDisplayAttributes())
+    setDisplayAttributes(window.configurator.getDisplayAttributes())
   }
   // function handleUpload(e) {
   //   setFile(e)
@@ -162,6 +163,7 @@ export default function Landing(props) {
     // This will be set config obj
     window.configurator.setConfiguration({ [attr]: val })
     setAttributes(window.configurator.getDisplayAttributes())
+    setDisplayAttributes(window.configurator.getDisplayAttributes())
   }
   function handlePartRef(attr, val) {
     // This will be set config obj
@@ -170,6 +172,7 @@ export default function Landing(props) {
       .setConfiguration({ [attr]: { assetId: val } })
       .then(() => {
         setAttributes(window.configurator.getDisplayAttributes())
+        setDisplayAttributes(window.configurator.getDisplayAttributes())
         setLength(window.configurator.getDisplayAttributes().length)
         // console.log(val)
       })
@@ -179,18 +182,21 @@ export default function Landing(props) {
     window.configurator.setConfiguration({ [attr]: newValue })
     setNum(newValue)
     setAttributes(window.configurator.getDisplayAttributes())
+    setDisplayAttributes(window.configurator.getDisplayAttributes())
   }
 
   function handleTextInput(attr, value) {
     setText(value)
     window.configurator.setConfiguration({ [attr]: value })
     setAttributes(window.configurator.getDisplayAttributes())
+    setDisplayAttributes(window.configurator.getDisplayAttributes())
   }
 
   function handleToggle(event) {
     setChecked(!checked)
     window.configurator.setConfiguration({ [event.name]: !checked })
     setAttributes(window.configurator.getDisplayAttributes())
+    setDisplayAttributes(window.configurator.getDisplayAttributes())
   }
 
   function translate(translations) {
