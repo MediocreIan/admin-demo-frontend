@@ -222,7 +222,7 @@ export default function Landing(props) {
   }
 
   function translate() {
-    if (Object.keys(window.player.getTranslations()).length > 0 && window.configurator.getDisplayAttributes()) {
+    if (window.player.getTranslations() && Object.keys(window.player.getTranslations()).length > 0 && window.configurator.getDisplayAttributes()) {
       console.log(window.configurator.getDisplayAttributes())
       let newAttributes = window.configurator
         .getDisplayAttributes()
