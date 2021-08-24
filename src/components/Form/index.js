@@ -223,19 +223,29 @@ export default function Landing(props) {
 
   function translate() {
     if (window.player.getTranslations() && Object.keys(window.player.getTranslations()).length > 0 && window.configurator.getDisplayAttributes()) {
-      console.log(window.configurator.getDisplayAttributes())
       let newAttributes = window.configurator
         .getDisplayAttributes()
         .map(attribute => {
           Object.keys(window.player.getTranslations()).forEach(translationKey => {
             if (attribute.name === translationKey) {
-              attribute.name = window.player.getTranslations()[translationKey]
+              attribute.label = window.player.getTranslations()[translationKey]
             }
+            attribute.values.forEach((value) => {
+              if (value.label === translationKey) {
+                value.label = window.player.getTranslations()[translationKey]
+              }
+            })
           })
           return attribute
         })
-      if (JSON.stringify(newAttributes) !== JSON.stringify(translatedAttributes)) {
-        setTranslatedAttributes(newAttributes)
+
+      if (attributes[0].label !== newAttributes[0].label) {
+        console.log(newAttributes, attributes)
+        setAttributes(newAttributes)
+        //this is dirty. the purpose of value attribtues is to change the name of the values without changing the name of the attribtue itself. 
+        //the purpose of the translated attributes is to change the name of the attribtues and use that as the display name for the attribute
+        // this is necessary because the name of the attribute is also what setDisplayAttributes() uses to set. 
+        //We should make another key on attributes in the future and use that for the display to fix this problem
       }
     }
   }
@@ -281,23 +291,27 @@ export default function Landing(props) {
             justify="center"
             align="center"
           >
-
-            <ArrowBackIcon
-              onClick={() => setStep('back')}
-              style={{ display: 'inline' }}
-            />
+            <Button>
+              <ArrowBackIcon
+                onClick={() => setStep('back')}
+                style={{ display: 'inline' }}
+              />
+            </Button>
             <Button style={{
               width: "220px"
-            }}>
+            }}
+              id="no-hover"
+            >
               <h3 style={{ display: 'inline' }}>
-                {translatedAttributes ? translatedAttributes[currentAttrIndex].name : attributes[currentAttrIndex].name}
+                {attributes[currentAttrIndex].label}
               </h3>
             </Button>
-
-            <ArrowForwardIcon
-              onClick={() => setStep('forward')}
-              style={{ display: 'inline' }}
-            />
+            < Button>
+              <ArrowForwardIcon
+                onClick={() => setStep('forward')}
+                style={{ display: 'inline' }}
+              />
+            </Button>
           </Grid>
           {/* <ArrowBackIcon onClick={() => setStep('back')} style={{float: 'left'}} />
           <h4 style={{float: 'left'}}>{attributes[currentAttrIndex].name}</h4>
@@ -383,7 +397,7 @@ export default function Landing(props) {
                     <div>
                       {/* <p>Part-Ref Long {event.name}</p> */}
                       <FormControl className={classes.formControl}>
-                        <InputLabel id={event.id}>{translatedAttributes ? translatedAttributes[currentAttrIndex].name : attributes[currentAttrIndex].name}</InputLabel>
+                        <InputLabel id={event.id}>{attributes[currentAttrIndex].label}</InputLabel>
                         <br />
                         <div>
                           {event.values.map(g => {

@@ -116,7 +116,7 @@ export default function Landing(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' className={classes.title} onClick={() => {
+          <Typography variant='h6' id="clickable_typography" className={classes.title} onClick={() => {
             history.push(`/`)
           }}>
             Threekit

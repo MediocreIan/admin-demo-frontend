@@ -77,3 +77,11 @@ svg:hover,
     transform: scale(1);
   }
 }
+
+#clickable_typography {
+  cursor: pointer;
+}
+
+#no-hover {
+  pointer-events: none;
+}
