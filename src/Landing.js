@@ -18,9 +18,10 @@ export default function Landing() {
     setHeight(2 * Math.round((c / 12.8) / 2))
     if (orgs.length < 1) {
       // let users = await getUsers()
-      fetch("https://admin.demo.threekit.com/orgs")
+      fetch("https://admin.demo.threekit.com/all")
         .then(response => response.json())
         .then(result => {
+          console.log(result)
           setOrgs(result)
         }
         )
@@ -56,6 +57,7 @@ export default function Landing() {
       <div className={`${classes.root}`} >
         <Typography
           variant="h6"
+          id="no-hover"
           style={{
             display: "block",
             width: "100%",
@@ -76,6 +78,7 @@ export default function Landing() {
             }}
           >
             {orgs.length > 0 ? orgs.map((org) => {
+              console.log(org)
               return (<Grid
                 key={org.id}
                 item
@@ -85,7 +88,7 @@ export default function Landing() {
                   marginTop: '3px'
                 }}
                 onClick={() => {
-                  history.push(`/listing/${org.userName}/${org.userId}/${org.publicToken}`)
+                  history.push(`/listing/${org.name}/${org._id}/${org.publicToken}`)
                 }}
               >
                 <Typography
@@ -94,7 +97,8 @@ export default function Landing() {
                   style={{
                     textDecoration: "underline",
                   }}
-                >{org.userName}</Typography>
+                  id="clickable_typography"
+                >{org.name}</Typography>
                 {/* <Typography variant="caption">{org.userName}</Typography> */}
               </Grid>)
             }) :
